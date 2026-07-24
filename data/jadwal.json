@@ -1,15 +1,6 @@
 [
   {
     "hari": "Senin",
-    "jam": "09:30 - 10:30",
-    "matkul": "METALURGI BESI BAJA",
-    "prodi": "Metalurgi Pertambangan 4C",
-    "dosen": "Muh.Syafri Zainuddin,S.T.,M.T.",
-    "ruangan": "K102",
-    "status": "Selesai"
-  },
-  {
-    "hari": "Senin",
     "jam": "10:30 - 11:30",
     "matkul": "FENOMENA TRANSPORT METALURGI",
     "prodi": "Metalurgi Pertambangan 4D",
@@ -391,7 +382,7 @@
     "jam": "09:30-10:30",
     "matkul": "Gambar Teknik",
     "prodi": "Teknik Elektronika",
-    "dosen": "Miftah, S.Pd., M.Pd",
+    "dosen": "Miftahul Hairia, S.Pd., M.Pd.",
     "ruangan": "K202",
     "status": "Selesai"
   },
@@ -1742,7 +1733,7 @@
     "prodi": "Teknik Rekayasa Multimedia 2B",
     "dosen": "Deril Alfiance Kaligis, S.Kom., M.T.",
     "ruangan": "LAB KOM 1",
-    "status": "Belum Mulai"
+    "status": "Berlangsung"
   },
   {
     "hari": "Jumat",
