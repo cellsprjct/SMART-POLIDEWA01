@@ -6,30 +6,56 @@
 // JAM & TANGGAL
 // ======================================
 
+// ======================================
+// JAM & TANGGAL (WITA)
+// ======================================
+
 function updateJam() {
 
     const sekarang = new Date();
 
-    const jam = String(sekarang.getHours()).padStart(2, "0");
-    const menit = String(sekarang.getMinutes()).padStart(2, "0");
-    const detik = String(sekarang.getSeconds()).padStart(2, "0");
+    // WITA (UTC+8)
+    const waktuWita = new Intl.DateTimeFormat("id-ID", {
+        timeZone: "Asia/Makassar",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+    }).format(sekarang);
 
-    document.getElementById("jam").textContent =
-        `${jam}:${menit}:${detik}`;
+    const tanggalWita = new Intl.DateTimeFormat("id-ID", {
+        timeZone: "Asia/Makassar",
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    }).format(sekarang);
 
-    document.getElementById("tanggal").textContent =
-        sekarang.toLocaleDateString("id-ID", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
+    document.getElementById("jam").textContent = waktuWita;
+    document.getElementById("tanggal").textContent = tanggalWita;
 
 }
 
-setInterval(updateJam,1000);
+// Jalankan tepat setiap detik
 updateJam();
 
+function mulaiJam() {
+
+    updateJam();
+
+    const delay = 1000 - (Date.now() % 1000);
+
+    setTimeout(function sinkron() {
+
+        updateJam();
+
+        setInterval(updateJam, 1000);
+
+    }, delay);
+
+}
+
+mulaiJam();
 
 // ======================================
 // VARIABEL GLOBAL
