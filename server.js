@@ -1,7 +1,15 @@
 const express = require("express");
 const path = require("path");
 
+const { mulaiAutoSync } = require("./utils/ntpTime");
+
 const app = express();
+
+// ======================================
+// Sinkronisasi Jam NTP (WITA)
+// ======================================
+
+mulaiAutoSync();
 
 // ======================================
 // View Engine

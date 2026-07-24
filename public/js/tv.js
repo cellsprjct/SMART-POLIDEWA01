@@ -7,51 +7,79 @@
 // ======================================
 
 // ======================================
-// JAM & TANGGAL (WITA)
+// JAM & TANGGAL (NTP + WITA, dari server)
 // ======================================
+// Jam TIDAK lagi diambil dari jam device/browser (yang bisa
+// salah setting/drift), tapi dari endpoint /api/waktu yang
+// sumbernya adalah waktu NTP yang sudah dikonversi ke WITA.
+// Supaya tidak nge-hit server tiap detik, jam disinkronkan
+// tiap 30 detik, lalu di antaranya jalan "menghitung sendiri"
+// (tick lokal) berbasis selisih dari waktu server terakhir.
 
-function updateJam() {
+let waktuServerMs = null;   // waktu server (ms) saat sinkron terakhir
+let waktuLokalSaatSync = null; // Date.now() lokal saat sinkron terakhir
 
-    const sekarang = new Date();
+async function syncWaktuServer() {
 
-    // WITA (UTC+8)
-    const waktuWita = new Intl.DateTimeFormat("id-ID", {
-        timeZone: "Asia/Makassar",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
-    }).format(sekarang);
+    try {
 
-    const tanggalWita = new Intl.DateTimeFormat("id-ID", {
-        timeZone: "Asia/Makassar",
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    }).format(sekarang);
+        const response = await fetch("/api/waktu", { cache: "no-store" });
 
-    document.getElementById("jam").textContent = waktuWita;
-    document.getElementById("tanggal").textContent = tanggalWita;
+        const data = await response.json();
+
+        waktuServerMs = data.timestamp;
+
+        waktuLokalSaatSync = Date.now();
+
+    } catch (err) {
+
+        console.error("Gagal sinkron jam server:", err);
+
+    }
 
 }
 
-// Jalankan tepat setiap detik
-updateJam();
+function renderJamTanggal() {
+
+    if (waktuServerMs === null) return;
+
+    // Estimasi waktu sekarang = waktu server terakhir + selisih lokal
+    const estimasiMs = waktuServerMs + (Date.now() - waktuLokalSaatSync);
+
+    const sekarang = new Date(estimasiMs);
+
+    const jam = String(sekarang.getUTCHours()).padStart(2, "0");
+    const menit = String(sekarang.getUTCMinutes()).padStart(2, "0");
+    const detik = String(sekarang.getUTCSeconds()).padStart(2, "0");
+
+    const namaHari = [
+        "Minggu", "Senin", "Selasa", "Rabu",
+        "Kamis", "Jumat", "Sabtu"
+    ];
+
+    const namaBulan = [
+        "Januari", "Februari", "Maret", "April",
+        "Mei", "Juni", "Juli", "Agustus",
+        "September", "Oktober", "November", "Desember"
+    ];
+
+    document.getElementById("jam").textContent = `${jam}:${menit}:${detik}`;
+
+    document.getElementById("tanggal").textContent =
+        `${namaHari[sekarang.getUTCDay()]}, ${sekarang.getUTCDate()} ` +
+        `${namaBulan[sekarang.getUTCMonth()]} ${sekarang.getUTCFullYear()}`;
+
+}
 
 function mulaiJam() {
 
-    updateJam();
+    syncWaktuServer().then(renderJamTanggal);
 
-    const delay = 1000 - (Date.now() % 1000);
+    // Tick tampilan tiap detik (halus di layar)
+    setInterval(renderJamTanggal, 1000);
 
-    setTimeout(function sinkron() {
-
-        updateJam();
-
-        setInterval(updateJam, 1000);
-
-    }, delay);
+    // Sinkron ulang ke server tiap 30 detik (bukan tiap detik)
+    setInterval(syncWaktuServer, 30000);
 
 }
 
@@ -501,62 +529,12 @@ async function refreshData() {
 }
 
 
-// ======================================
-// UPDATE STATUS SETIAP MENIT
-// ======================================
-
-function updateStatus() {
-
-    semuaData.forEach(item => {
-
-        const sekarang = new Date();
-
-        const menitSekarang =
-            sekarang.getHours() * 60 +
-            sekarang.getMinutes();
-
-        const waktu = item.jam.split("-");
-
-        const mulai = waktu[0].trim().split(":");
-
-        const selesai = waktu[1].trim().split(":");
-
-        const menitMulai =
-            Number(mulai[0]) * 60 +
-            Number(mulai[1]);
-
-        const menitSelesai =
-            Number(selesai[0]) * 60 +
-            Number(selesai[1]);
-
-        if (menitSekarang < menitMulai) {
-
-            item.status = "Belum Mulai";
-
-        }
-
-        else if (
-
-            menitSekarang >= menitMulai &&
-            menitSekarang < menitSelesai
-
-        ) {
-
-            item.status = "Berlangsung";
-
-        }
-
-        else {
-
-            item.status = "Selesai";
-
-        }
-
-    });
-
-    tampilkanRuangan();
-
-}
+// Catatan: status ("Berlangsung"/"Belum Mulai"/"Selesai") TIDAK
+// dihitung ulang di client. Status sudah dihitung dengan benar
+// di server (routes/api.js) berbasis waktu NTP + WITA, lalu
+// dikirim sebagai field "status" pada tiap item dari /api/jadwal.
+// Menghitung ulang di client berisiko salah karena memakai jam
+// device browser yang timezone/akurasinya tidak terjamin.
 
 
 // ======================================
@@ -570,14 +548,10 @@ window.addEventListener("load", () => {
 });
 
 
-// Update jam
-setInterval(updateJam, 1000);
-
-// Update status
-setInterval(updateStatus, 1000);
-
-// Ambil data terbaru dari admin
-setInterval(refreshData, 1000);
+// Ambil data terbaru dari server (status di dalamnya sudah
+// dihitung server pakai NTP+WITA). Cukup tiap 15 detik,
+// tidak perlu tiap detik.
+setInterval(refreshData, 15000);
 
 // Ganti ruangan
 setInterval(nextRoom, 10000);

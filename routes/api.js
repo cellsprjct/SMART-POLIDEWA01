@@ -2,6 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
+const { getNowMakassar } = require("../utils/ntpTime");
+
 const router = express.Router();
 
 const filePath = path.join(__dirname, "../data/jadwal.json");
@@ -49,7 +51,9 @@ function hariSekarang() {
 
         "Sabtu"
 
-    ][new Date().getDay()];
+    // getUTCDay() dipakai karena getNowMakassar() sudah
+    // menggeser waktu ke WITA, bukan timezone OS server
+    ][getNowMakassar().getUTCDay()];
 
 }
 
@@ -98,7 +102,7 @@ function hitungStatus(hari,jam){
 
     ];
 
-    const sekarang=new Date();
+    const sekarang=getNowMakassar();
 
     const hariIni=hariSekarang();
 
@@ -124,9 +128,9 @@ function hitungStatus(hari,jam){
 
     const menitSekarang=
 
-        sekarang.getHours()*60+
+        sekarang.getUTCHours()*60+
 
-        sekarang.getMinutes();
+        sekarang.getUTCMinutes();
 
     const waktu=jam.split("-");
 
@@ -223,6 +227,54 @@ router.get("/jadwal",(req,res)=>{
     });
 
     res.json(jadwal);
+
+});
+
+
+// ======================================
+// API WAKTU (untuk jam di layar TV)
+// Sumbernya sama dengan yang dipakai untuk
+// menghitung status jadwal: NTP + WITA
+// ======================================
+
+router.get("/waktu",(req,res)=>{
+
+    const namaHari=[
+
+        "Minggu","Senin","Selasa","Rabu",
+
+        "Kamis","Jumat","Sabtu"
+
+    ];
+
+    const namaBulan=[
+
+        "Januari","Februari","Maret","April",
+
+        "Mei","Juni","Juli","Agustus",
+
+        "September","Oktober","November","Desember"
+
+    ];
+
+    const sekarang=getNowMakassar();
+
+    const jam=String(sekarang.getUTCHours()).padStart(2,"0");
+    const menit=String(sekarang.getUTCMinutes()).padStart(2,"0");
+    const detik=String(sekarang.getUTCSeconds()).padStart(2,"0");
+
+    res.json({
+
+        jam:`${jam}:${menit}:${detik}`,
+
+        tanggal:`${namaHari[sekarang.getUTCDay()]}, `+
+            `${sekarang.getUTCDate()} `+
+            `${namaBulan[sekarang.getUTCMonth()]} `+
+            `${sekarang.getUTCFullYear()}`,
+
+        timestamp:sekarang.getTime()
+
+    });
 
 });
 
