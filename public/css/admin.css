@@ -1,0 +1,161 @@
+body{
+
+background:#eef2f7;
+
+}
+
+.navbar{
+
+height:75px;
+
+}
+
+.card{
+
+border:none;
+
+border-radius:15px;
+
+}
+
+.card-body{
+
+padding:25px;
+
+}
+
+h1{
+
+font-weight:bold;
+
+color:#0027b3;
+
+}
+
+.table{
+
+background:white;
+
+}
+
+.table th{
+
+text-align:center;
+
+}
+
+.table td{
+
+vertical-align:middle;
+
+}
+
+.btn{
+
+border-radius:10px;
+
+}
+
+.badge{
+
+font-size:15px;
+
+padding:8px 15px;
+
+}
+
+/* ==========================================
+HEADER CARD
+========================================== */
+
+.card-header{
+
+    background:#0033be;
+
+    color:white;
+
+    padding:18px 25px;
+
+}
+
+.card-header-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.card-filter{
+
+    margin-top:18px;
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+.card-filter select{
+
+    width:180px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:0 12px;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.search-box{
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+
+    background:white;
+
+    border-radius:8px;
+
+    overflow:hidden;
+
+}
+
+.search-box i{
+
+    width:50px;
+
+    text-align:center;
+
+    color:#666;
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    height:42px;
+
+    padding-right:15px;
+
+    font-size:15px;
+
+}

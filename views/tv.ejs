@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SMART POLIDEWA</title>
+
+    <link rel="stylesheet" href="/css/tv.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="/js/tv.js" defer></script>
+
+</head>
+
+<body>
+
+<!-- ===================================================== -->
+<!-- HEADER -->
+<!-- ===================================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <img src="/img/POLIDEWA.png" class="logo">
+
+        <div class="kampus">
+            <h1>POLITEKNIK DEWANTARA</h1>
+            <span>TEKNIK ELEKTRONIKA</span>
+        </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+        <div class="clock-box">
+            <div id="jam">00:00:00</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="date-box">
+
+            <div id="tanggal">
+                Selasa, 21 Juli 2026
+            </div>
+
+            <div class="cuaca">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                <span>30°C</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ===================================================== -->
+<!-- JUDUL -->
+<!-- ===================================================== -->
+
+<section class="judul">
+
+    JADWAL MATA KULIAH HARI INI
+
+</section>
+
+<!-- ===================================================== -->
+<!-- NAMA RUANGAN -->
+<!-- ===================================================== -->
+
+<section class="room-header">
+
+    <span id="ruanganAktif">-</span>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- TABEL -->
+<!-- ===================================================== -->
+
+<div class="table-area">
+
+<table class="table-jadwal">
+
+<thead>
+
+<tr>
+
+    <th>WAKTU</th>
+    <th>MATA KULIAH</th>
+    <th>PROGRAM STUDI</th>
+    <th>DOSEN</th>
+    <th>STATUS</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tbodyJadwal">
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- PANEL KELAS SAAT INI -->
+<!-- ===================================================== -->
+
+<section class="kelas-panel">
+
+    <div class="kelas-title">
+
+        <h2>KELAS SAAT INI</h2>
+
+    </div>
+
+    <div class="kelas-content" id="kelasSaatIni">
+
+        <!-- diisi otomatis tv.js -->
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- RUNNING TEXT -->
+<!-- ===================================================== -->
+
+<div class="running">
+
+    <div class="running-icon">
+
+        <i class="fa-solid fa-bullhorn"></i>
+
+    </div>
+
+    <marquee scrollamount="7">
+
+        SELAMAT DATANG DI POLITEKNIK DEWANTARA •
+
+        INFORMASI AKADEMIK DITAMPILKAN SECARA REALTIME •
+
+        SEMOGA HARI ANDA MENYENANGKAN •
+
+        SMART POLIDEWA
+
+    </marquee>
+
+</div>
+
+</body>
+</html>

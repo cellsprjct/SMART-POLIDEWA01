@@ -1,0 +1,57 @@
+body{
+
+    margin:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:100vh;
+
+    background:linear-gradient(135deg,#0b4fa2,#1783d8);
+
+    font-family:Arial;
+
+}
+
+.login-box{
+
+    width:420px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+}
+
+.logo{
+
+    width:100px;
+
+    margin-bottom:20px;
+
+}
+
+h2{
+
+    color:#0b4fa2;
+
+    margin-bottom:5px;
+
+}
+
+p{
+
+    color:gray;
+
+    margin-bottom:30px;
+
+}

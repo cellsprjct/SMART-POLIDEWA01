@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dashboard Admin</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="/css/admin.css">
+
+</head>
+
+<body class="bg-light">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+
+        <div class="container-fluid">
+
+            <h3 class="text-white mb-0">
+
+                <i class="bi bi-display"></i>
+
+                DASHBOARD ADMIN SMART POLIDEWA
+
+            </h3>
+
+            <a href="/" class="btn btn-light">
+
+                <i class="bi bi-tv"></i>
+
+                Preview TV
+
+            </a>
+
+        </div>
+
+    </nav>
+
+    <div class="container mt-4">
+
+        <!-- CARD STATISTIK -->
+        <div class="row g-4">
+
+            <div class="col-md-3">
+
+                <div class="card shadow border-0">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-calendar-week text-primary fs-1"></i>
+
+                        <h5 class="mt-2">Total Jadwal</h5>
+
+                        <h2><%= jadwal.length %></h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card shadow border-0">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-person-video3 text-success fs-1"></i>
+
+                        <h5 class="mt-2">Dosen</h5>
+
+                        <h2>
+
+                            <%= [...new Set(jadwal.map(item=>item.dosen))].length %>
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card shadow border-0">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-building text-warning fs-1"></i>
+
+                        <h5 class="mt-2">Ruangan</h5>
+
+                        <h2>
+
+                            <%= [...new Set(jadwal.map(item=>item.ruangan))].length %>
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                        <i class="bi bi-mortarboard text-info fs-1"></i>
+
+                        <h5 class="mt-2">Program Studi</h5>
+
+                        <h2>
+
+                            <%= [...new Set(jadwal.map(item => item.prodi))].length %>
+
+                        </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TABEL -->
+        <div class="card shadow mt-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <h4 class="mb-0">
+
+                        <i class="bi bi-table"></i>
+
+                        Data Jadwal Perkuliahan
+
+                    </h4>
+
+                    <a href="/admin/tambah" class="btn btn-success">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        Tambah Jadwal
+
+                    </a>
+
+                </div>
+
+                
+            <div class="row mt-3 g-2">
+
+    <!-- Filter Hari -->
+    <div class="col-md-3">
+
+        <select id="filterHari" class="form-select">
+
+            <option value="">📅 Semua Hari</option>
+
+            <option value="Senin">Senin</option>
+            <option value="Selasa">Selasa</option>
+            <option value="Rabu">Rabu</option>
+            <option value="Kamis">Kamis</option>
+            <option value="Jumat">Jumat</option>
+            <option value="Sabtu">Sabtu</option>
+
+        </select>
+
+    </div>
+
+    <!-- Filter Ruangan -->
+    <div class="col-md-3">
+
+        <select id="filterRuangan" class="form-select">
+
+            <option value="">🏫 Semua Ruangan</option>
+
+            <% let ruang = [...new Set(jadwal.map(j => j.ruangan))]; %>
+
+            <% ruang.forEach(function(r){ %>
+
+                <option value="<%= r %>">
+
+                    <%= r %>
+
+                </option>
+
+            <% }) %>
+
+        </select>
+
+    </div>
+
+    <!-- Filter Prodi -->
+    <div class="col-md-3">
+
+        <select id="filterProdi" class="form-select">
+
+            <option value="">🎓 Semua Prodi</option>
+
+            <% let prodi = [...new Set(jadwal.map(j => j.prodi))]; %>
+
+            <% prodi.forEach(function(p){ %>
+
+                <option value="<%= p %>">
+
+                    <%= p %>
+
+                </option>
+
+            <% }) %>
+
+        </select>
+
+    </div>
+
+    <!-- Cari -->
+    <div class="col-md-3">
+
+        <input
+
+            type="text"
+
+            id="searchMatkul"
+
+            class="form-control"
+
+            placeholder="🔍 Cari Mata Kuliah..."
+
+        >
+
+    </div>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-primary text-center">
+
+             <tr>
+
+                <th>No</th>
+
+                <th>Hari</th>
+
+                <th>Jam</th>
+
+                <th>Mata Kuliah</th>
+
+                <th>Program Studi</th>
+
+                <th>Dosen</th>
+
+                <th>Ruangan</th>
+
+                <th>Status</th>
+
+                <th width="170">Aksi</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+                <% if(jadwal.length==0){ %>
+
+<tr>
+
+    <td colspan="8" class="text-center">
+
+        Belum ada jadwal.
+
+    </td>
+
+</tr>
+
+<% } %>
+
+<% jadwal.forEach((item,index)=>{ %>
+
+<tr class="jadwal-row">
+
+    <td class="text-center">
+
+        <%= index+1 %>
+
+    </td>
+
+    <td class="hari">
+
+        <%= item.hari %>
+
+    </td>
+
+    <td>
+
+        <%= item.jam %>
+
+    </td>
+
+    <td class="matkul">
+
+    <%= item.matkul %>
+
+    </td>
+
+    <td class="prodi">
+
+    <%= item.prodi || "-" %>
+
+    </td>
+
+    <td>
+
+    <%= item.dosen %>
+
+    </td>
+
+    <td class="ruangan">
+
+        <%= item.ruangan %>
+
+    </td>
+
+    <td class="text-center">
+
+        <% if(item.status=="Berlangsung"){ %>
+
+            <span class="badge bg-success">
+
+                🟢 Berlangsung
+
+            </span>
+
+        <% } else if(item.status=="Belum Mulai"){ %>
+
+            <span class="badge bg-warning text-dark">
+
+                🟡 Belum Mulai
+
+            </span>
+
+        <% } else { %>
+
+            <span class="badge bg-secondary">
+
+                ⚪ Selesai
+
+            </span>
+
+        <% } %>
+
+    </td>
+
+    <td class="text-center">
+
+    <a href="/admin/edit/<%= item.indexAsli %>"
+       class="btn btn-warning btn-sm">
+
+        <i class="bi bi-pencil-square"></i>
+
+    </a>
+
+    <a href="/admin/hapus/<%= item.indexAsli %>"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
+
+        <i class="bi bi-trash"></i>
+
+    </a>
+
+    </td>
+
+</tr>
+
+<% }) %>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <footer class="text-center mt-5 mb-3 text-secondary">
+
+        © 2026 POLITEKNIK DEWANTARA
+
+    </footer>
+
+    <script>
+
+        const namaHari = [
+            "Minggu",
+            "Senin",
+            "Selasa",
+            "Rabu",
+            "Kamis",
+            "Jumat",
+            "Sabtu"
+        ];
+
+        document.getElementById("hari").innerHTML =
+            namaHari[new Date().getDay()];
+
+    </script>
+
+    <script src="/js/admin.js"></script>
+
+</body>
+
+</html>
