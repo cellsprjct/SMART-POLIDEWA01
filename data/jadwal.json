@@ -522,7 +522,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784736915705,
     "hari": "Rabu",
     "jam": "07:30-09:30",
     "matkul": "Perangkat Lunak Aplikasi",
@@ -532,7 +531,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784737112620,
     "hari": "Rabu",
     "jam": "09:30-10:30",
     "matkul": "PPT",
@@ -542,7 +540,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784737294100,
     "hari": "Rabu",
     "jam": "10:30-12:30",
     "matkul": "Perangkat Lunak Aplikasi",
@@ -552,7 +549,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784737461554,
     "hari": "Rabu",
     "jam": "12:30-13:30",
     "matkul": "Perangkat Lunak Aplikasi",
@@ -562,7 +558,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784737577777,
     "hari": "Rabu",
     "jam": "13:30-14:30",
     "matkul": "-",
@@ -572,7 +567,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738116375,
     "hari": "Rabu",
     "jam": "07:30-08:30",
     "matkul": "K3",
@@ -582,7 +576,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738232081,
     "hari": "Rabu",
     "jam": "08:30-10:30",
     "matkul": "DSI",
@@ -592,7 +585,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738314682,
     "hari": "Rabu",
     "jam": "10:30-12:30",
     "matkul": "DSI",
@@ -602,7 +594,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738479467,
     "hari": "Rabu",
     "jam": "12:30-13:30",
     "matkul": "Perangkat Lunak Aplikasi",
@@ -612,7 +603,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738616368,
     "hari": "Rabu",
     "jam": "13:30-14:30",
     "matkul": "Perangkat Lunak Aplikasi",
@@ -622,7 +612,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738765509,
     "hari": "Rabu",
     "jam": "07.30-08.30",
     "matkul": "MATEMATIKA TEKNIK",
@@ -632,7 +621,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738878759,
     "hari": "Rabu",
     "jam": "08:30-09:30",
     "matkul": "Bahasa Inggris",
@@ -642,7 +630,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784738961986,
     "hari": "Rabu",
     "jam": "09.30-10.30",
     "matkul": "Bahasa Inggris",
@@ -652,7 +639,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784739121272,
     "hari": "Rabu",
     "jam": "11.30-12.30",
     "matkul": "Bahasa Inggris",
@@ -662,7 +648,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784739203867,
     "hari": "Rabu",
     "jam": "12.30-13.30",
     "matkul": "STANDARDISASI",
@@ -672,7 +657,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784739283839,
     "hari": "Rabu",
     "jam": "13.30-14.30",
     "matkul": "Bahasa Inggris",
@@ -682,7 +666,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784739374428,
     "hari": "Rabu",
     "jam": "14:30-15:30",
     "matkul": "Bahasa Inggris",
@@ -692,17 +675,15 @@
     "status": "Selesai"
   },
   {
-    "id": 1784739454090,
     "hari": "Rabu",
     "jam": "15:30-17:30",
-    "matkul": "Piro Metarlugi",
+    "matkul": "Piro Metalurgi",
     "prodi": "Metalurgi Pertambangan 4C",
     "dosen": "Ir. Irhamni Nuhardin, S.T., M.T",
     "ruangan": "RD 2 Pintu Geser",
     "status": "Selesai"
   },
   {
-    "id": 1784739700250,
     "hari": "Senin",
     "jam": "09.30-10.30",
     "matkul": "MATEMATIKA TEKNIK",
@@ -712,7 +693,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784739774097,
     "hari": "Senin",
     "jam": "10.30-11.30",
     "matkul": "Standardisasi",
@@ -722,7 +702,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784739913724,
     "hari": "Senin",
     "jam": "11.30-12.30",
     "matkul": "Standardisasi",
@@ -732,7 +711,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784740128670,
     "hari": "Senin",
     "jam": "12.30-13.30",
     "matkul": "-",
@@ -742,7 +720,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784740242501,
     "hari": "Senin",
     "jam": "13:30-14:30",
     "matkul": "-",
@@ -752,7 +729,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784740325653,
     "hari": "Senin",
     "jam": "14.30-15.30",
     "matkul": "Standardisasi",
@@ -762,7 +738,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784740423963,
     "hari": "Senin",
     "jam": "16.30-17.30",
     "matkul": "Standardisasi",
@@ -772,7 +747,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784740581550,
     "hari": "Senin",
     "jam": "07.30-08.30",
     "matkul": "-",
@@ -782,7 +756,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784740655904,
     "hari": "Senin",
     "jam": "08:30-09:30",
     "matkul": "Standardisasi",
@@ -792,7 +765,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784740937300,
     "hari": "Kamis",
     "jam": "07:30-08:30",
     "matkul": "Matematika Teknik",
@@ -802,7 +774,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741035825,
     "hari": "Kamis",
     "jam": "08:30-09:30",
     "matkul": "-",
@@ -812,7 +783,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741091384,
     "hari": "Kamis",
     "jam": "09:30-10:30",
     "matkul": "-",
@@ -822,7 +792,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741140684,
     "hari": "Kamis",
     "jam": "10:30-11:30",
     "matkul": "Standardisasi",
@@ -832,7 +801,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741204725,
     "hari": "Kamis",
     "jam": "11:30-12:30",
     "matkul": "Matematika Teknik",
@@ -842,7 +810,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741497114,
     "hari": "Kamis",
     "jam": "13:30-14:30",
     "matkul": "Flotasi",
@@ -852,7 +819,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741570965,
     "hari": "Kamis",
     "jam": "14:30-15:30",
     "matkul": "Matematika Teknik",
@@ -862,7 +828,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741752212,
     "hari": "Kamis",
     "jam": "15:30-16:30",
     "matkul": "Pengujian & Karakterisasi Bahan",
@@ -872,7 +837,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741837370,
     "hari": "Kamis",
     "jam": "16:30-17:30",
     "matkul": "Pengolahan Nikel",
@@ -882,7 +846,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784741978731,
     "hari": "Kamis",
     "jam": "07:30-08:30",
     "matkul": "PKN Gab. 6",
@@ -892,7 +855,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742083072,
     "hari": "Senin",
     "jam": "09.30-10.30",
     "matkul": "Pengujian & Karakterisasi Bahan",
@@ -902,7 +864,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742154539,
     "hari": "Senin",
     "jam": "10:30-11:30",
     "matkul": "-",
@@ -912,7 +873,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742235190,
     "hari": "Senin",
     "jam": "11:30-12:30",
     "matkul": "Metalurgi Besi Baja",
@@ -922,7 +882,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742308043,
     "hari": "Senin",
     "jam": "13:30-14:30",
     "matkul": "Pengolahan Nikel",
@@ -932,7 +891,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742372424,
     "hari": "Senin",
     "jam": "14:30-15:30",
     "matkul": "Pengujian & Karakterisasi Bahan",
@@ -942,7 +900,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742436505,
     "hari": "Senin",
     "jam": "15:30-16:30",
     "matkul": "Metalurgi Besi Baja",
@@ -952,7 +909,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742529326,
     "hari": "Senin",
     "jam": "16:30-17:30",
     "matkul": "-",
@@ -962,7 +918,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742660420,
     "hari": "Senin",
     "jam": "08:30-10:30",
     "matkul": "-",
@@ -972,7 +927,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742741996,
     "hari": "Senin",
     "jam": "10:30-12:30",
     "matkul": "-",
@@ -982,7 +936,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742904897,
     "hari": "Senin",
     "jam": "13:30-14:30",
     "matkul": "Teknik Pengukuran",
@@ -992,7 +945,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784742995729,
     "hari": "Senin",
     "jam": "14:30-16:30",
     "matkul": "-",
@@ -1002,7 +954,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784743110525,
     "hari": "Senin",
     "jam": "07:30-09:30",
     "matkul": "-",
@@ -1012,7 +963,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784743205455,
     "hari": "Senin",
     "jam": "09:30-10:30",
     "matkul": "-",
@@ -1022,7 +972,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784743272695,
     "hari": "Senin",
     "jam": "10:30-12:30",
     "matkul": "Perangkat Lunak Aplikasi",
@@ -1032,7 +981,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784743366610,
     "hari": "Senin",
     "jam": "13:30-15:30",
     "matkul": "Perangkat Lunak Aplikasi",
@@ -1042,7 +990,6 @@
     "status": "Selesai"
   },
   {
-    "id": 1784743448075,
     "hari": "Senin",
     "jam": "15:30-17:30",
     "matkul": "-",
