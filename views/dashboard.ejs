@@ -59,7 +59,7 @@
 
                         <h5 class="mt-2">Total Jadwal</h5>
 
-                        <h2><%= jadwal.length %></h2>
+                        <h2 id="totalJadwal"><%= jadwal.length %></h2>
 
                     </div>
 
@@ -77,7 +77,7 @@
 
                         <h5 class="mt-2">Dosen</h5>
 
-                        <h2>
+                        <h2 id="totalDosen">
 
                             <%= [...new Set(jadwal.map(item=>item.dosen))].length %>
 
@@ -99,7 +99,7 @@
 
                         <h5 class="mt-2">Ruangan</h5>
 
-                        <h2>
+                        <h2 id="totalRuangan">
 
                             <%= [...new Set(jadwal.map(item=>item.ruangan))].length %>
 
@@ -121,7 +121,7 @@
 
                         <h5 class="mt-2">Program Studi</h5>
 
-                        <h2>
+                        <h2 id="totalProdi">
 
                             <%= [...new Set(jadwal.map(item => item.prodi))].length %>
 
@@ -130,6 +130,8 @@
                 </div>
 
             </div>
+
+        </div>
 
         </div>
 
@@ -159,239 +161,251 @@
 
                 </div>
 
+            </div>
+
+            <div class="card-body">
                 
-            <div class="row mt-3 g-2">
+                <div class="row mt-3 g-2">
 
-    <!-- Filter Hari -->
-    <div class="col-md-3">
+                    <!-- Filter Hari -->
+                    <div class="col-md-3">
 
-        <select id="filterHari" class="form-select">
+                        <select id="filterHari" class="form-select">
 
-            <option value="">📅 Semua Hari</option>
+                            <option value="">📅 Semua Hari</option>
 
-            <option value="Senin">Senin</option>
-            <option value="Selasa">Selasa</option>
-            <option value="Rabu">Rabu</option>
-            <option value="Kamis">Kamis</option>
-            <option value="Jumat">Jumat</option>
-            <option value="Sabtu">Sabtu</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
 
-        </select>
+                        </select>
 
-    </div>
+                    </div>
 
-    <!-- Filter Ruangan -->
-    <div class="col-md-3">
+                    <!-- Filter Ruangan -->
+                    <div class="col-md-3">
 
-        <select id="filterRuangan" class="form-select">
+                        <select id="filterRuangan" class="form-select">
 
-            <option value="">🏫 Semua Ruangan</option>
+                            <option value="">🏫 Semua Ruangan</option>
 
-            <% let ruang = [...new Set(jadwal.map(j => j.ruangan))]; %>
+                            <% let ruang = [...new Set(jadwal.map(j => j.ruangan))]; %>
 
-            <% ruang.forEach(function(r){ %>
+                            <% ruang.forEach(function(r){ %>
 
-                <option value="<%= r %>">
+                                <option value="<%= r %>">
 
-                    <%= r %>
+                                    <%= r %>
 
-                </option>
+                                </option>
 
-            <% }) %>
+                            <% }) %>
 
-        </select>
+                        </select>
 
-    </div>
+                    </div>
 
-    <!-- Filter Prodi -->
-    <div class="col-md-3">
+                    <!-- Filter Prodi -->
+                    <div class="col-md-3">
 
-        <select id="filterProdi" class="form-select">
+                        <select id="filterProdi" class="form-select">
 
-            <option value="">🎓 Semua Prodi</option>
+                            <option value="">🎓 Semua Prodi</option>
 
-            <% let prodi = [...new Set(jadwal.map(j => j.prodi))]; %>
+                            <% let prodi = [...new Set(jadwal.map(j => j.prodi))]; %>
 
-            <% prodi.forEach(function(p){ %>
+                            <% prodi.forEach(function(p){ %>
 
-                <option value="<%= p %>">
+                                <option value="<%= p %>">
 
-                    <%= p %>
+                                    <%= p %>
 
-                </option>
+                                </option>
 
-            <% }) %>
+                            <% }) %>
 
-        </select>
+                        </select>
 
-    </div>
+                    </div>
 
-    <!-- Cari -->
-    <div class="col-md-3">
+                    <!-- Cari -->
+                    <div class="col-md-3">
 
-        <input
+                        <input
 
-            type="text"
+                            type="text"
 
-            id="searchMatkul"
+                            id="searchMatkul"
 
-            class="form-control"
+                            class="form-control"
 
-            placeholder="🔍 Cari Mata Kuliah..."
+                            placeholder="🔍 Cari Mata Kuliah..."
 
-        >
+                        >
 
-    </div>
+                    </div>
 
-    </div>
+                </div>
 
-    <div class="card-body">
+                <div class="table-responsive mt-3">
 
-        <table class="table table-bordered table-hover align-middle">
+                    <table class="table table-bordered table-hover align-middle">
 
-            <thead class="table-primary text-center">
+                        <thead class="table-primary text-center">
 
-             <tr>
+                            <tr>
 
-                <th>No</th>
+                                <th>No</th>
 
-                <th>Hari</th>
+                                <th>Hari</th>
 
-                <th>Jam</th>
+                                <th>Jam</th>
 
-                <th>Mata Kuliah</th>
+                                <th>Mata Kuliah</th>
 
-                <th>Program Studi</th>
+                                <th>Program Studi</th>
 
-                <th>Dosen</th>
+                                <th>Dosen</th>
 
-                <th>Ruangan</th>
+                                <th>Ruangan</th>
 
-                <th>Status</th>
+                                <th>Status</th>
 
-                <th width="170">Aksi</th>
+                                <th width="170">Aksi</th>
 
-            </tr>
+                            </tr>
 
-            </thead>
+                        </thead>
 
-            <tbody>
-                <% if(jadwal.length==0){ %>
+                        <tbody id="tbodyJadwal">
+                            <% if(jadwal.length==0){ %>
 
-<tr>
+                            <tr>
 
-    <td colspan="8" class="text-center">
+                                <td colspan="9" class="text-center">
 
-        Belum ada jadwal.
+                                    Belum ada jadwal.
 
-    </td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<% } %>
+                            <% } else { %>
 
-<% jadwal.forEach((item,index)=>{ %>
+                            <% jadwal.forEach((item,index)=>{ %>
 
-<tr class="jadwal-row">
+                            <tr class="jadwal-row" 
+                                data-hari="<%= item.hari %>" 
+                                data-ruangan="<%= item.ruangan %>" 
+                                data-prodi="<%= item.prodi || '' %>" 
+                                data-matkul="<%= item.matkul %>"
+                                data-jam="<%= item.jam %>">
 
-    <td class="text-center">
+                                <td class="text-center">
 
-        <%= index+1 %>
+                                    <%= index+1 %>
 
-    </td>
+                                </td>
 
-    <td class="hari">
+                                <td class="hari">
 
-        <%= item.hari %>
+                                    <%= item.hari %>
 
-    </td>
+                                </td>
 
-    <td>
+                                <td>
 
-        <%= item.jam %>
+                                    <strong><%= item.jamDisplay || item.jam %></strong>
 
-    </td>
+                                </td>
 
-    <td class="matkul">
+                                <td class="matkul">
 
-    <%= item.matkul %>
+                                    <%= item.matkul %>
 
-    </td>
+                                </td>
 
-    <td class="prodi">
+                                <td class="prodi">
 
-    <%= item.prodi || "-" %>
+                                    <%= item.prodi || "-" %>
 
-    </td>
+                                </td>
 
-    <td>
+                                <td>
 
-    <%= item.dosen %>
+                                    <%= item.dosen %>
 
-    </td>
+                                </td>
 
-    <td class="ruangan">
+                                <td class="ruangan">
 
-        <%= item.ruangan %>
+                                    <%= item.ruangan %>
 
-    </td>
+                                </td>
 
-    <td class="text-center">
+                                <td class="text-center status-cell">
 
-        <% if(item.status=="Berlangsung"){ %>
+                                    <% if(item.status=="Berlangsung"){ %>
 
-            <span class="badge bg-success">
+                                        <span class="badge bg-success">
 
-                🟢 Berlangsung
+                                            🟢 Berlangsung
 
-            </span>
+                                        </span>
 
-        <% } else if(item.status=="Belum Mulai"){ %>
+                                    <% } else if(item.status=="Belum Mulai"){ %>
 
-            <span class="badge bg-warning text-dark">
+                                        <span class="badge bg-warning text-dark">
 
-                🟡 Belum Mulai
+                                            🟡 Belum Mulai
 
-            </span>
+                                        </span>
 
-        <% } else { %>
+                                    <% } else { %>
 
-            <span class="badge bg-secondary">
+                                        <span class="badge bg-secondary">
 
-                ⚪ Selesai
+                                            ⚪ Selesai
 
-            </span>
+                                        </span>
 
-        <% } %>
+                                    <% } %>
 
-    </td>
+                                </td>
 
-    <td class="text-center">
+                                <td class="text-center">
 
-    <a href="/admin/edit/<%= item.indexAsli %>"
-       class="btn btn-warning btn-sm">
+                                    <a href="/admin/edit/<%= item.id || item.indexAsli %>"
+                                       class="btn btn-warning btn-sm">
 
-        <i class="bi bi-pencil-square"></i>
+                                        <i class="bi bi-pencil-square"></i>
 
-    </a>
+                                    </a>
 
-    <a href="/admin/hapus/<%= item.indexAsli %>"
-       class="btn btn-danger btn-sm"
-       onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
+                                    <a href="/admin/hapus/<%= item.id || item.indexAsli %>"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
 
-        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i>
 
-    </a>
+                                    </a>
 
-    </td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<% }) %>
+                            <% }) %>
 
-                    </tbody>
+                            <% } %>
 
-                </table>
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
@@ -400,7 +414,6 @@
     </div>
 
     <!-- FOOTER -->
-
     <footer class="text-center mt-5 mb-3 text-secondary">
 
         © 2026 POLITEKNIK DEWANTARA
@@ -408,23 +421,163 @@
     </footer>
 
     <script>
+        // ======================================
+        // DATA JADWAL DARI SERVER (EJS)
+        // ======================================
 
-        const namaHari = [
-            "Minggu",
-            "Senin",
-            "Selasa",
-            "Rabu",
-            "Kamis",
-            "Jumat",
-            "Sabtu"
-        ];
+        const dataJadwal = <%- JSON.stringify(jadwal) %>;
 
-        document.getElementById("hari").innerHTML =
-            namaHari[new Date().getDay()];
+        // ======================================
+        // FUNGSI GET WITA TIME
+        // ======================================
 
+        function getWITATime() {
+            return new Date(new Date().toLocaleString("en-US", {
+                timeZone: "Asia/Makassar"
+            }));
+        }
+
+        // ======================================
+        // JAM KE MENIT
+        // ======================================
+
+        function jamKeMenit(jam) {
+            jam = jam.replace(/[.\-\/]/g, ":");
+            const parts = jam.split(":").map(Number);
+            if (parts.length >= 2) {
+                return (parts[0] || 0) * 60 + (parts[1] || 0);
+            }
+            return 0;
+        }
+
+        // ======================================
+        // HITUNG STATUS WITA
+        // ======================================
+
+        function hitungStatusWITA(hari, jam) {
+            jam = jam.replace(/[.\-\/]/g, ":");
+            
+            const daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const sekarang = getWITATime();
+            
+            const hariIni = daftarHari[sekarang.getDay()];
+            const indexHari = daftarHari.indexOf(hari);
+            const indexNow = daftarHari.indexOf(hariIni);
+
+            if (indexHari > indexNow) return "Belum Mulai";
+            if (indexHari < indexNow) return "Selesai";
+
+            const waktu = jam.split("-");
+            
+            if (waktu.length < 2) {
+                const menitMulai = jamKeMenit(jam);
+                const menitSekarang = sekarang.getHours() * 60 + sekarang.getMinutes();
+                
+                if (menitSekarang < menitMulai) return "Belum Mulai";
+                if (menitSekarang < menitMulai + 120) return "Berlangsung";
+                return "Selesai";
+            }
+
+            const menitMulai = jamKeMenit(waktu[0].trim());
+            const menitSelesai = jamKeMenit(waktu[1].trim());
+            const menitSekarang = sekarang.getHours() * 60 + sekarang.getMinutes();
+
+            if (menitSekarang < menitMulai) return "Belum Mulai";
+            if (menitSekarang >= menitMulai && menitSekarang < menitSelesai) return "Berlangsung";
+            return "Selesai";
+        }
+
+        // ======================================
+        // UPDATE STATUS OTOMATIS (WITA)
+        // ======================================
+
+        function updateStatusOtomatis() {
+            const rows = document.querySelectorAll("#tbodyJadwal tr.jadwal-row");
+            
+            if (rows.length === 0) return;
+
+            rows.forEach(row => {
+                const hari = row.dataset.hari;
+                const jam = row.dataset.jam;
+                
+                // Cari data dari dataJadwal
+                const item = dataJadwal.find(d => d.hari === hari && d.jam === jam);
+                
+                if (item) {
+                    // Hitung status ulang dengan WITA
+                    const status = hitungStatusWITA(item.hari, item.jam);
+                    const statusCell = row.querySelector(".status-cell");
+                    
+                    if (statusCell) {
+                        let statusBadge = '';
+                        if (status === "Berlangsung") {
+                            statusBadge = `<span class="badge bg-success">🟢 Berlangsung</span>`;
+                        } else if (status === "Belum Mulai") {
+                            statusBadge = `<span class="badge bg-warning text-dark">🟡 Belum Mulai</span>`;
+                        } else {
+                            statusBadge = `<span class="badge bg-secondary">⚪ Selesai</span>`;
+                        }
+                        statusCell.innerHTML = statusBadge;
+                    }
+                }
+            });
+        }
+
+        // ======================================
+        // FILTER FUNCTIONS
+        // ======================================
+
+        function applyFilters() {
+            const filterHari = document.getElementById("filterHari").value;
+            const filterRuangan = document.getElementById("filterRuangan").value;
+            const filterProdi = document.getElementById("filterProdi").value;
+            const searchMatkul = document.getElementById("searchMatkul").value.toLowerCase();
+
+            const rows = document.querySelectorAll(".jadwal-row");
+
+            rows.forEach(row => {
+                const hari = row.dataset.hari;
+                const ruangan = row.dataset.ruangan;
+                const prodi = row.dataset.prodi;
+                const matkul = row.dataset.matkul.toLowerCase();
+
+                let show = true;
+
+                if (filterHari && hari !== filterHari) show = false;
+                if (filterRuangan && ruangan !== filterRuangan) show = false;
+                if (filterProdi && prodi !== filterProdi) show = false;
+                if (searchMatkul && !matkul.includes(searchMatkul)) show = false;
+
+                row.style.display = show ? "" : "none";
+            });
+        }
+
+        // ======================================
+        // EVENT LISTENERS
+        // ======================================
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Event filter
+            document.getElementById("filterHari").addEventListener("change", applyFilters);
+            document.getElementById("filterRuangan").addEventListener("change", applyFilters);
+            document.getElementById("filterProdi").addEventListener("change", applyFilters);
+            document.getElementById("searchMatkul").addEventListener("keyup", applyFilters);
+            
+            // Update status pertama kali setelah 1 detik
+            setTimeout(updateStatusOtomatis, 1000);
+        });
+
+        // ======================================
+        // AUTO UPDATE STATUS SETIAP MENIT (WITA)
+        // ======================================
+
+        // Update status setiap 60 detik menggunakan WITA
+        setInterval(updateStatusOtomatis, 60000);
+
+        // Hapus script yang tidak diperlukan
+        // const namaHari = [...]
+        // document.getElementById("hari").innerHTML = ...
     </script>
-
-    <script src="/js/admin.js"></script>
 
 </body>
 

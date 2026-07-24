@@ -1,15 +1,6 @@
 [
   {
     "hari": "Senin",
-    "jam": "10:30 - 11:30",
-    "matkul": "FENOMENA TRANSPORT METALURGI",
-    "prodi": "Metalurgi Pertambangan 4D",
-    "dosen": "Anugrah Awaliyah,S.T.,M.T.",
-    "ruangan": "K102",
-    "status": "Selesai"
-  },
-  {
-    "hari": "Senin",
     "jam": "11:30 - 12:30",
     "matkul": "PERALATAN TEKNIK",
     "prodi": "Teknik Elektronika",
@@ -2715,14 +2706,5 @@
     "dosen": "Islah Audziah Putri Beang, S.Mat., M.Mat",
     "ruangan": "K201",
     "status": "Selesai"
-  },
-  {
-    "hari": "Jumat",
-    "jam": "19:00-20:00",
-    "matkul": "K3",
-    "prodi": "Teknik Elektronika",
-    "dosen": "Muslim Andi Yusuf,S.H.,M.H.",
-    "ruangan": "K201",
-    "status": "Berlangsung"
   }
 ]
