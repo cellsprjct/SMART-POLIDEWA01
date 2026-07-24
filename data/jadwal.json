@@ -10,7 +10,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "13:30 - 14:30",
+    "jam": "13:30-14:30",
     "matkul": "MATEMATIKA TEKNIK",
     "prodi": "Metalurgi Pertambangan 2H",
     "dosen": "Islah Audziah Putri Beang , S.Mat.,M.Mat.",
@@ -55,7 +55,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "09.30-10.30",
+    "jam": "09:30-10:30",
     "matkul": "Agama",
     "prodi": "Metalurgi Pertambangan 2E & 2F",
     "dosen": "RAHMAN SYAM, S.Pd., M.Si",
@@ -64,7 +64,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "10.30-11.30",
+    "jam": "10:30-11:30",
     "matkul": "Agama",
     "prodi": "Metalurgi Pertambangan 2Q & 2R",
     "dosen": "RAHMAN SYAM, S.Pd., M.Si",
@@ -73,7 +73,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "11.30-12.30",
+    "jam": "11:30-12:30",
     "matkul": "Bahasa Indonesia",
     "prodi": "Metalurgi Pertambangan 2I & 2J",
     "dosen": "Nur Aqidah, S.P.,M.P.",
@@ -82,7 +82,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "13.30-14-30",
+    "jam": "13:30-14:30",
     "matkul": "Bahasa Indonesia",
     "prodi": "Metalurgi Pertambangan 2K & 2L",
     "dosen": "Nur Aqidah, S.P.,M.P.",
@@ -91,7 +91,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "14.30-15.30",
+    "jam": "14:30-15:30",
     "matkul": "Bahasa Indonesia",
     "prodi": "Metalurgi Pertambangan 2Q & 2 R",
     "dosen": "Ehlisa, S.Ak., M.Pd.",
@@ -127,7 +127,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "08.30-09.30",
+    "jam": "08:30-09:30",
     "matkul": "MATEMATIKA TEKNIK",
     "prodi": "Metalurgi Pertambangan 2B",
     "dosen": "Islah Audziah Putri Beang, S.Mat., M.Mat",
@@ -685,7 +685,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "09.30-10.30",
+    "jam": "09:30-10:30",
     "matkul": "MATEMATIKA TEKNIK",
     "prodi": "Metalurgi Pertambangan 2I",
     "dosen": "Islah Audziah Putri Beang, S.Mat., M.Mat",
@@ -694,7 +694,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "10.30-11.30",
+    "jam": "10:30-11:30",
     "matkul": "Standardisasi",
     "prodi": "Metalurgi Pertambangan 2A",
     "dosen": "Erin Savitri Gawing, S. Si., M.T",
@@ -703,7 +703,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "11.30-12.30",
+    "jam": "11:30-12:30",
     "matkul": "Standardisasi",
     "prodi": "Metalurgi Pertambangan 2E",
     "dosen": "Zhalsa Larasati, S.Pd.,M.Si",
@@ -712,7 +712,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "12.30-13.30",
+    "jam": "12:30-13:30",
     "matkul": "-",
     "prodi": "Teramedia 4",
     "dosen": "Risda M, S,Pd., M.Pd.",
@@ -730,7 +730,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "14.30-15.30",
+    "jam": "14:30-15:30",
     "matkul": "Standardisasi",
     "prodi": "Metalurgi Pertambangan 2C",
     "dosen": "Dr. Nur Ilmi Shaqinah, S.Pd.,M.Pd",
@@ -748,7 +748,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "07.30-08.30",
+    "jam": "07:30-08:30",
     "matkul": "-",
     "prodi": "Sipil 2B",
     "dosen": "Asdalifah Paisal, S.T.,M.T",
@@ -856,7 +856,7 @@
   },
   {
     "hari": "Senin",
-    "jam": "09.30-10.30",
+    "jam": "09:30-10:30",
     "matkul": "Pengujian & Karakterisasi Bahan",
     "prodi": "Metalurgi Pertambangan 4F",
     "dosen": "Misdayanti, S.Si.,M.Si.",
