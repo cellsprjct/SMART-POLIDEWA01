@@ -3,84 +3,84 @@
 // ======================================
 
 // ======================================
-// SINKRONISASI WAKTU DENGAN SERVER
+// JAM & TANGGAL
 // ======================================
 
-let timeOffset = 0;
-let isTimeSynced = false;
+// ======================================
+// JAM & TANGGAL (NTP + WITA, dari server)
+// ======================================
 
-async function syncTimeWithServer() {
+let waktuServerMs = null;
+let waktuLokalSaatSync = null;
+
+async function syncWaktuServer() {
+
     try {
-        const start = Date.now();
-        const response = await fetch("/api/time", { 
-            cache: "no-store",
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
-        });
-        const end = Date.now();
+
+        const response = await fetch("/api/waktu", { cache: "no-store" });
+
         const data = await response.json();
-        
-        const serverTime = new Date(data.serverTime).getTime();
-        const roundtrip = (end - start) / 2;
-        timeOffset = serverTime - (start + roundtrip);
-        isTimeSynced = true;
-        
-        console.log(`✅ Waktu tersinkronisasi dengan server (offset: ${timeOffset}ms)`);
+
+        waktuServerMs = data.timestamp;
+
+        waktuLokalSaatSync = Date.now();
+
     } catch (err) {
-        console.warn("⚠️ Gagal sync waktu, menggunakan waktu lokal", err);
-        timeOffset = 0;
-        isTimeSynced = false;
+
+        console.error("Gagal sinkron jam server:", err);
+
     }
+
 }
 
-function getServerTime() {
-    return new Date(Date.now() + timeOffset);
+function renderJamTanggal() {
+
+    if (waktuServerMs === null) return;
+
+    const estimasiMs = waktuServerMs + (Date.now() - waktuLokalSaatSync);
+
+    const sekarang = new Date(estimasiMs);
+
+    const jam = String(sekarang.getUTCHours()).padStart(2, "0");
+    const menit = String(sekarang.getUTCMinutes()).padStart(2, "0");
+    const detik = String(sekarang.getUTCSeconds()).padStart(2, "0");
+
+    const namaHari = [
+        "Minggu", "Senin", "Selasa", "Rabu",
+        "Kamis", "Jumat", "Sabtu"
+    ];
+
+    const namaBulan = [
+        "Januari", "Februari", "Maret", "April",
+        "Mei", "Juni", "Juli", "Agustus",
+        "September", "Oktober", "November", "Desember"
+    ];
+
+    document.getElementById("jam").textContent = `${jam}:${menit}:${detik}`;
+
+    document.getElementById("tanggal").textContent =
+        `${namaHari[sekarang.getUTCDay()]}, ${sekarang.getUTCDate()} ` +
+        `${namaBulan[sekarang.getUTCMonth()]} ${sekarang.getUTCFullYear()}`;
+
 }
 
-// ======================================
-// JAM & TANGGAL (WITA)
-// ======================================
-
-function updateJam() {
-    const sekarang = getServerTime();
-
-    // WITA (UTC+8)
-    const waktuWita = new Intl.DateTimeFormat("id-ID", {
-        timeZone: "Asia/Makassar",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
-    }).format(sekarang);
-
-    const tanggalWita = new Intl.DateTimeFormat("id-ID", {
-        timeZone: "Asia/Makassar",
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    }).format(sekarang);
-
-    document.getElementById("jam").textContent = waktuWita;
-    document.getElementById("tanggal").textContent = tanggalWita;
-}
-
-// Jalankan tepat setiap detik
 function mulaiJam() {
-    updateJam();
-    const delay = 1000 - (Date.now() % 1000);
-    setTimeout(function sinkron() {
-        updateJam();
-        setInterval(updateJam, 1000);
-    }, delay);
+
+    syncWaktuServer().then(renderJamTanggal);
+
+    setInterval(renderJamTanggal, 1000);
+
+    setInterval(syncWaktuServer, 30000);
+
 }
 
+mulaiJam();
+
 // ======================================
-// FUNGSI CUACA (OpenWeatherMap)
+// 🔥 FUNGSI CUACA (OpenWeatherMap)
 // ======================================
 
-// 🔥 MENGGUNAKAN API KEY YANG SUDAH DIBUAT
+// Konfigurasi API Key
 const WEATHER_CONFIG = {
     apiKey: '0c9f105e364361f2f5d79337ae1fbae3', // API Key dari OpenWeatherMap
     city: 'Palopo',
@@ -91,25 +91,17 @@ const WEATHER_CONFIG = {
 
 async function getWeatherData() {
     try {
-        // Gunakan endpoint yang benar
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${WEATHER_CONFIG.city},${WEATHER_CONFIG.country}&units=${WEATHER_CONFIG.units}&lang=${WEATHER_CONFIG.lang}&appid=${WEATHER_CONFIG.apiKey}`;
-        
-        console.log(`🌤️ Mengambil data cuaca untuk ${WEATHER_CONFIG.city}...`);
         
         const response = await fetch(url, {
             cache: 'no-store'
         });
         
-        console.log(`📡 Response status: ${response.status}`);
-        
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error('❌ Error dari OpenWeatherMap:', errorData);
-            throw new Error(`HTTP error! status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
-        console.log('✅ Data cuaca berhasil diambil:', data);
         
         if (data.main && data.weather) {
             return {
@@ -124,7 +116,7 @@ async function getWeatherData() {
         throw new Error('Invalid weather data format');
         
     } catch (err) {
-        console.warn('⚠️ Gagal mengambil data cuaca:', err.message);
+        console.warn('⚠️ Gagal mengambil data cuaca:', err);
         return null;
     }
 }
@@ -161,24 +153,17 @@ async function updateCuaca() {
     const namaLokasi = document.getElementById('namaLokasi');
     
     if (weatherData) {
-        // Update icon cuaca
         if (weatherIcon) {
             weatherIcon.className = `fa-solid ${weatherData.icon}`;
         }
-        
-        // Update suhu
         if (suhuElement) {
             suhuElement.textContent = `${weatherData.temp}°C`;
         }
-        
-        // Update lokasi
         if (namaLokasi) {
             namaLokasi.textContent = `${weatherData.city}`;
         }
-        
         console.log(`🌤️ Cuaca: ${weatherData.temp}°C - ${weatherData.condition} - ${weatherData.city}`);
     } else {
-        // Jika gagal ambil data, tampilkan default
         if (weatherIcon) {
             weatherIcon.className = 'fa-solid fa-cloud-sun';
         }
@@ -197,31 +182,54 @@ async function updateCuaca() {
 // ======================================
 
 let semuaData = [];
+
 let daftarRuangan = [];
+
 let indexRuangan = 0;
+
 
 // ======================================
 // LOAD DATA DARI API
 // ======================================
 
 async function loadData() {
+
     try {
+
         const response = await fetch("/api/jadwal", {
+
             cache: "no-store"
+
         });
+
         semuaData = await response.json();
+
         daftarRuangan = [
+
             ...new Set(
+
                 semuaData.map(item => item.ruangan)
+
             )
+
         ];
+
         if (indexRuangan >= daftarRuangan.length) {
+
             indexRuangan = 0;
+
         }
+
         tampilkanRuangan();
-    } catch (err) {
-        console.error("Gagal mengambil data :", err);
+
     }
+
+    catch (err) {
+
+        console.error("Gagal mengambil data :", err);
+
+    }
+
 }
 
 // ======================================
@@ -229,13 +237,16 @@ async function loadData() {
 // ======================================
 
 function tampilkanRuangan() {
+
     const roomTitle = document.getElementById("ruanganAktif");
     const tbody = document.getElementById("tbodyJadwal");
     const panel = document.getElementById("kelasSaatIni");
 
     // Belum ada data
     if (daftarRuangan.length === 0) {
+
         roomTitle.textContent = "-";
+
         tbody.innerHTML = `
         <tr>
             <td colspan="6" style="text-align:center">
@@ -243,19 +254,25 @@ function tampilkanRuangan() {
             </td>
         </tr>
         `;
+
         panel.innerHTML = `
             <h3>Belum ada kelas berlangsung</h3>
         `;
+
         return;
+
     }
 
     // Ruangan aktif
     const ruangan = daftarRuangan[indexRuangan];
+
     roomTitle.textContent = ruangan;
 
     // Filter jadwal berdasarkan ruangan
     const dataRuangan = semuaData.filter(item =>
+
         item.ruangan === ruangan
+
     );
 
     // Tampilkan tabel
@@ -263,6 +280,7 @@ function tampilkanRuangan() {
 
     // Tampilkan kelas saat ini
     tampilkanKelasSaatIni(dataRuangan);
+
 }
 
 // ======================================
@@ -270,11 +288,14 @@ function tampilkanRuangan() {
 // ======================================
 
 function tampilkanTabel(data) {
+
     const tbody = document.getElementById("tbodyJadwal");
+
     tbody.innerHTML = "";
 
     // Jika tidak ada jadwal
     if (data.length === 0) {
+
         tbody.innerHTML = `
         <tr>
             <td colspan="5" style="text-align:center">
@@ -282,164 +303,250 @@ function tampilkanTabel(data) {
             </td>
         </tr>
         `;
+
         return;
+
     }
 
     // Urutkan berdasarkan jam mulai
     data.sort((a, b) => {
+
         const jamA = a.jam.split("-")[0].trim();
+
         const jamB = b.jam.split("-")[0].trim();
+
         return jamA.localeCompare(jamB);
+
     });
 
     // Isi tabel
-    const tampil = data.slice(0, 10);
-    tampil.forEach(item => {
+    const tampil = data.slice(0,10);
+
+    tampil.forEach(item=>{
+
         let badge = "";
         let rowClass = "";
 
         switch (item.status) {
+
             case "Berlangsung":
+
                 badge = `
                     <span class="badge badge-green">
                         BERLANGSUNG
                     </span>
                 `;
+
                 rowClass = "row-active";
+
                 break;
+
             case "Belum Mulai":
+
                 badge = `
                     <span class="badge badge-orange">
                         BELUM MULAI
                     </span>
                 `;
+
                 break;
+
             default:
+
                 badge = `
                     <span class="badge badge-gray">
                         SELESAI
                     </span>
                 `;
+
         }
 
-        const waktuTampil = item.jamDisplay || item.jam;
-
-        tbody.innerHTML += `
+    tbody.innerHTML += `
     <tr class="${rowClass}">
+
         <td>
-            <strong>${waktuTampil}</strong>
+            <strong>${item.jam}</strong>
         </td>
+
         <td>
             <strong>${item.matkul}</strong>
         </td>
+
         <td>
             <strong>${item.prodi || "-"}</strong>
         </td>
+
         <td>
             <strong>${item.dosen}</strong>
         </td>
+
         <td>
             ${badge}
         </td>
+
     </tr>
     `;
+
     });
+
 }
 
 // ======================================
 // PANEL KELAS SAAT INI
 // ======================================
 
-function tampilkanKelasSaatIni(data) {
-    const panel = document.getElementById("kelasSaatIni");
-    const sekarang = data.find(x => x.status === "Berlangsung");
+function tampilkanKelasSaatIni(data){
 
-    if (!sekarang) {
-        panel.innerHTML = `
+    const panel=document.getElementById("kelasSaatIni");
+
+    const sekarang=data.find(x=>x.status==="Berlangsung");
+
+    if(!sekarang){
+
+        panel.innerHTML=`
+
         <div class="panel-box">
+
             <i class="fa-solid fa-book-open"></i>
+
             <div class="panel-text no-class-text">
+
                 <div class="no-class-title">
                     Belum ada kelas berlangsung
                 </div>
+
                 <div class="no-class-subtitle">
                     Silakan menunggu jadwal berikutnya
                 </div>
+
             </div>
+
         </div>
+
         <div class="panel-box">
+
             <i class="fa-regular fa-clock"></i>
+
             <div>
+
                 <h3>WAKTU</h3>
+
                 <p>-</p>
+
             </div>
+
         </div>
+
         <div class="panel-box">
+
             <i class="fa-solid fa-user"></i>
+
             <div>
+
                 <h3>DOSEN</h3>
+
                 <p>-</p>
+
             </div>
+
         </div>
+
         <div class="panel-box">
+
             <i class="fa-solid fa-building"></i>
+
             <div>
+
                 <h3>RUANGAN</h3>
+
                 <p>-</p>
+
             </div>
+
         </div>
+
         `;
+
         return;
+
     }
 
-    const waktuTampil = sekarang.jamDisplay || sekarang.jam;
+    panel.innerHTML=`
 
-    panel.innerHTML = `
     <div class="panel-box">
+
         <i class="fa-solid fa-book-open"></i>
+
         <div class="panel-text">
+
             <div class="panel-value">
                 ${sekarang.matkul}
             </div>
+
             <div class="panel-label">
-                ${sekarang.prodi || "-"}
+                ${sekarang.prodi}
             </div>
+
         </div>
+
     </div>
+
     <div class="panel-box">
+
         <i class="fa-regular fa-clock"></i>
+
         <div class="panel-text">
+
             <div class="panel-label">
                 WAKTU
             </div>
+
             <div class="panel-value">
-                ${waktuTampil}
+                ${sekarang.jam}
             </div>
+
         </div>
+
     </div>
+
     <div class="panel-box">
+
         <i class="fa-solid fa-user"></i>
+
         <div class="panel-text">
+
             <div class="panel-label">
                 DOSEN
             </div>
+
             <div class="panel-value">
                 ${sekarang.dosen}
             </div>
+
         </div>
+
     </div>
+
     <div class="panel-box">
+
         <i class="fa-solid fa-building"></i>
+
         <div class="panel-text">
+
             <div class="panel-label">
                 RUANGAN
             </div>
+
             <div class="panel-value">
                 ${sekarang.ruangan}
             </div>
+
         </div>
+
     </div>
+
     `;
+
 }
 
 // ======================================
@@ -447,134 +554,98 @@ function tampilkanKelasSaatIni(data) {
 // ======================================
 
 function nextRoom() {
+
     if (daftarRuangan.length <= 1) return;
+
     indexRuangan++;
+
     if (indexRuangan >= daftarRuangan.length) {
+
         indexRuangan = 0;
+
     }
+
     tampilkanRuangan();
+
 }
+
 
 // ======================================
 // REFRESH DATA DARI SERVER
 // ======================================
 
 async function refreshData() {
+
     try {
+
         const response = await fetch(
+
             "/api/jadwal?t=" + Date.now(),
-            { cache: "no-store" }
-        );
-        semuaData = await response.json();
-        daftarRuangan = [
-            ...new Set(
-                semuaData.map(item => item.ruangan)
-            )
-        ];
-        if (indexRuangan >= daftarRuangan.length) {
-            indexRuangan = 0;
-        }
-        tampilkanRuangan();
-    } catch (err) {
-        console.error(err);
-    }
-}
 
-// ======================================
-// UPDATE STATUS SETIAP MENIT
-// ======================================
+            {
 
-function updateStatus() {
-    const sekarang = getServerTime();
-    const waktuWita = new Date(sekarang.toLocaleString("en-US", {
-        timeZone: "Asia/Makassar"
-    }));
-    
-    const menitSekarang = waktuWita.getHours() * 60 + waktuWita.getMinutes();
+                cache: "no-store"
 
-    semuaData.forEach(item => {
-        const jamBersih = item.jam.replace(/[.\-\/]/g, ":");
-        const waktu = jamBersih.split("-");
-        
-        if (waktu.length >= 2) {
-            const mulai = waktu[0].trim().split(":");
-            const selesai = waktu[1].trim().split(":");
-            const menitMulai = Number(mulai[0]) * 60 + Number(mulai[1]);
-            const menitSelesai = Number(selesai[0]) * 60 + Number(selesai[1]);
-
-            if (menitSekarang < menitMulai) {
-                item.status = "Belum Mulai";
-            } else if (menitSekarang >= menitMulai && menitSekarang < menitSelesai) {
-                item.status = "Berlangsung";
-            } else {
-                item.status = "Selesai";
             }
-        } else {
-            item.status = "Selesai";
-        }
-    });
 
-    tampilkanRuangan();
+        );
+
+        semuaData = await response.json();
+
+        daftarRuangan = [
+
+            ...new Set(
+
+                semuaData.map(item => item.ruangan)
+
+            )
+
+        ];
+
+        if (indexRuangan >= daftarRuangan.length) {
+
+            indexRuangan = 0;
+
+        }
+
+        tampilkanRuangan();
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+    }
+
 }
+
+
+// Catatan: status ("Berlangsung"/"Belum Mulai"/"Selesai") TIDAK
+// dihitung ulang di client. Status sudah dihitung dengan benar
+// di server (routes/api.js) berbasis waktu NTP + WITA, lalu
+// dikirim sebagai field "status" pada tiap item dari /api/jadwal.
+
 
 // ======================================
 // START
 // ======================================
 
-window.addEventListener("load", async () => {
-    // Sinkronisasi waktu dengan server
-    await syncTimeWithServer();
+window.addEventListener("load", () => {
+
+    loadData();
     
-    // Mulai jam
-    mulaiJam();
-    
-    // Load data jadwal
-    await loadData();
-    
-    // Update status
-    updateStatus();
-    
-    // Update cuaca
-    await updateCuaca();
-    
-    // Update last update
-    updateLastUpdate();
+    // 🔥 Update cuaca saat load
+    updateCuaca();
+
 });
 
-// Update jam setiap detik
-setInterval(updateJam, 1000);
 
-// Update status setiap menit
-setInterval(updateStatus, 60000);
+// Ambil data terbaru dari server
+setInterval(refreshData, 15000);
 
-// Ambil data terbaru dari admin setiap 5 detik
-setInterval(refreshData, 5000);
-
-// Ganti ruangan setiap 10 detik
+// Ganti ruangan
 setInterval(nextRoom, 10000);
 
-// Sinkronisasi ulang waktu dengan server setiap 5 menit
-setInterval(syncTimeWithServer, 300000);
-
-// Update cuaca setiap 10 menit
-setInterval(updateCuaca, 600000);
-
-// ======================================
-// UPDATE LAST UPDATE
-// ======================================
-
-function updateLastUpdate() {
-    const sekarang = getServerTime();
-    const waktuWita = new Date(sekarang.toLocaleString("en-US", {
-        timeZone: "Asia/Makassar"
-    }));
-    
-    const jam = String(waktuWita.getHours()).padStart(2, "0");
-    const menit = String(waktuWita.getMinutes()).padStart(2, "0");
-    const detik = String(waktuWita.getSeconds()).padStart(2, "0");
-    
-    const lastUpdate = document.getElementById("lastUpdate");
-    if (lastUpdate) {
-        lastUpdate.textContent = `Terakhir diperbarui: ${jam}:${menit}:${detik} WITA`;
-    }
-}
+// 🔥 Update cuaca
+setInterval(updateCuaca, 10000);

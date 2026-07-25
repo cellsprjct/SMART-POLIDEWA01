@@ -2,88 +2,62 @@
 // FILTER DASHBOARD ADMIN
 // ======================================
 
-const filterHari = document.getElementById("filterHari");
-const filterRuangan = document.getElementById("filterRuangan");
-const filterProdi = document.getElementById("filterProdi");
-const searchMatkul = document.getElementById("searchMatkul");
+document.addEventListener("DOMContentLoaded", function() {
 
-function filterTabel() {
+    const filterHari = document.getElementById("filterHari");
+    const filterRuangan = document.getElementById("filterRuangan");
+    const filterProdi = document.getElementById("filterProdi");
+    const searchMatkul = document.getElementById("searchMatkul");
 
-    const hari = filterHari.value.trim().toLowerCase();
-    const ruangan = filterRuangan.value.trim().toLowerCase();
-    const prodi = filterProdi.value.trim().toLowerCase();
-    const keyword = searchMatkul.value.trim().toLowerCase();
+    function filterTabel() {
 
-    const rows = document.querySelectorAll(".jadwal-row");
+        const hari = filterHari ? filterHari.value.trim().toLowerCase() : "";
+        const ruangan = filterRuangan ? filterRuangan.value.trim().toLowerCase() : "";
+        const prodi = filterProdi ? filterProdi.value.trim().toLowerCase() : "";
+        const keyword = searchMatkul ? searchMatkul.value.trim().toLowerCase() : "";
 
-    let nomor = 1;
+        const rows = document.querySelectorAll(".jadwal-row");
 
-    rows.forEach(row => {
+        let nomor = 1;
 
-        const dataHari =
-            row.querySelector(".hari")
-            .textContent
-            .trim()
-            .toLowerCase();
+        rows.forEach(row => {
 
-        const dataRuangan =
-            row.querySelector(".ruangan")
-            .textContent
-            .trim()
-            .toLowerCase();
+            // Ambil data dari atribut data-*
+            const dataHari = (row.getAttribute("data-hari") || "").toLowerCase();
+            const dataRuangan = (row.getAttribute("data-ruangan") || "").toLowerCase();
+            const dataProdi = (row.getAttribute("data-prodi") || "").toLowerCase();
+            const dataMatkul = (row.getAttribute("data-matkul") || "").toLowerCase();
 
-        const dataProdi =
-            row.querySelector(".prodi")
-            .textContent
-            .trim()
-            .toLowerCase();
+            let cocokHari = true;
+            let cocokRuangan = true;
+            let cocokProdi = true;
+            let cocokMatkul = true;
 
-        const dataMatkul =
-            row.querySelector(".matkul")
-            .textContent
-            .trim()
-            .toLowerCase();
+            if (hari) cocokHari = dataHari === hari;
+            if (ruangan) cocokRuangan = dataRuangan === ruangan;
+            if (prodi) cocokProdi = dataProdi === prodi;
+            if (keyword) cocokMatkul = dataMatkul.includes(keyword);
 
-        const cocokHari =
-            hari === "" ||
-            dataHari === hari;
+            if (cocokHari && cocokRuangan && cocokProdi && cocokMatkul) {
+                row.style.display = "";
+                const tdNo = row.querySelector("td:first-child");
+                if (tdNo) tdNo.textContent = nomor++;
+            } else {
+                row.style.display = "none";
+            }
 
-        const cocokRuangan =
-            ruangan === "" ||
-            dataRuangan === ruangan;
+        });
 
-        const cocokProdi =
-            prodi === "" ||
-            dataProdi === prodi;
+    }
 
-        const cocokMatkul =
-            keyword === "" ||
-            dataMatkul.includes(keyword);
+    if (filterHari) filterHari.addEventListener("change", filterTabel);
+    if (filterRuangan) filterRuangan.addEventListener("change", filterTabel);
+    if (filterProdi) filterProdi.addEventListener("change", filterTabel);
+    if (searchMatkul) searchMatkul.addEventListener("keyup", filterTabel);
 
-        if (
-            cocokHari &&
-            cocokRuangan &&
-            cocokProdi &&
-            cocokMatkul
-        ) {
+    // Jalankan pertama kali
+    setTimeout(filterTabel, 100);
 
-            row.style.display = "";
+    console.log("✅ Filter siap digunakan");
 
-            row.cells[0].textContent = nomor++;
-
-        } else {
-
-            row.style.display = "none";
-
-        }
-
-    });
-
-}
-
-filterHari.addEventListener("change", filterTabel);
-filterRuangan.addEventListener("change", filterTabel);
-filterProdi.addEventListener("change", filterTabel);
-searchMatkul.addEventListener("keyup", filterTabel);
-
-window.addEventListener("load", filterTabel);
+});

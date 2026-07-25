@@ -41,46 +41,6 @@ app.use("/api", require("./routes/api"));
 app.use("/", require("./routes/tv"));
 
 // ======================================
-// API CUACA (Proxy untuk menghindari CORS)
-// ======================================
-
-app.get("/api/weather", async (req, res) => {
-    try {
-        const city = req.query.city || 'Makassar';
-        const apiKey = process.env.WEATHER_API_KEY || 'YOUR_API_KEY';
-        
-        // Gunakan OpenWeatherMap
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},ID&units=metric&lang=id&appid=${apiKey}`;
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.cod === 200) {
-            res.json({
-                success: true,
-                data: {
-                    temp: Math.round(data.main.temp),
-                    icon: data.weather[0].icon,
-                    condition: data.weather[0].description,
-                    city: data.name,
-                    country: data.sys.country
-                }
-            });
-        } else {
-            res.status(404).json({
-                success: false,
-                message: 'City not found'
-            });
-        }
-    } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: err.message
-        });
-    }
-});
-
-// ======================================
 // 404
 // ======================================
 

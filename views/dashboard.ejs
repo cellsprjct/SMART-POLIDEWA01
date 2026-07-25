@@ -180,6 +180,7 @@
                             <option value="Kamis">Kamis</option>
                             <option value="Jumat">Jumat</option>
                             <option value="Sabtu">Sabtu</option>
+                            <option value="Minggu">Minggu</option>
 
                         </select>
 
@@ -302,7 +303,8 @@
                                 data-ruangan="<%= item.ruangan %>" 
                                 data-prodi="<%= item.prodi || '' %>" 
                                 data-matkul="<%= item.matkul %>"
-                                data-jam="<%= item.jam %>">
+                                data-jam="<%= item.jam %>"
+                                data-id="<%= item.id || index %>">
 
                                 <td class="text-center">
 
@@ -416,139 +418,61 @@
     <!-- FOOTER -->
     <footer class="text-center mt-5 mb-3 text-secondary">
 
-        © 2026 POLITEKNIK DEWANTARA
+        <p>
+            <i class="bi bi-clock"></i>
+            Waktu Indonesia Tengah (WITA) | Status diperbarui otomatis setiap 60 detik
+        </p>
+        <p>© 2026 POLITEKNIK DEWANTARA</p>
 
     </footer>
 
+    <!-- ===================================================== -->
+    <!-- 🔥 SCRIPT FILTER (LANGSUNG DI HALAMAN) -->
+    <!-- ===================================================== -->
     <script>
         // ======================================
-        // DATA JADWAL DARI SERVER (EJS)
+        // FUNGSI FILTER
         // ======================================
 
-        const dataJadwal = JSON.stringify(jadwal);
+        function filterTabel() {
+            const filterHari = document.getElementById("filterHari");
+            const filterRuangan = document.getElementById("filterRuangan");
+            const filterProdi = document.getElementById("filterProdi");
+            const searchMatkul = document.getElementById("searchMatkul");
 
-        // ======================================
-        // FUNGSI GET WITA TIME
-        // ======================================
-
-        function getWITATime() {
-            return new Date(new Date().toLocaleString("en-US", {
-                timeZone: "Asia/Makassar"
-            }));
-        }
-
-        // ======================================
-        // JAM KE MENIT
-        // ======================================
-
-        function jamKeMenit(jam) {
-            jam = jam.replace(/[.\-\/]/g, ":");
-            const parts = jam.split(":").map(Number);
-            if (parts.length >= 2) {
-                return (parts[0] || 0) * 60 + (parts[1] || 0);
-            }
-            return 0;
-        }
-
-        // ======================================
-        // HITUNG STATUS WITA
-        // ======================================
-
-        function hitungStatusWITA(hari, jam) {
-            jam = jam.replace(/[.\-\/]/g, ":");
-            
-            const daftarHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-            const sekarang = getWITATime();
-            
-            const hariIni = daftarHari[sekarang.getDay()];
-            const indexHari = daftarHari.indexOf(hari);
-            const indexNow = daftarHari.indexOf(hariIni);
-
-            if (indexHari > indexNow) return "Belum Mulai";
-            if (indexHari < indexNow) return "Selesai";
-
-            const waktu = jam.split("-");
-            
-            if (waktu.length < 2) {
-                const menitMulai = jamKeMenit(jam);
-                const menitSekarang = sekarang.getHours() * 60 + sekarang.getMinutes();
-                
-                if (menitSekarang < menitMulai) return "Belum Mulai";
-                if (menitSekarang < menitMulai + 120) return "Berlangsung";
-                return "Selesai";
-            }
-
-            const menitMulai = jamKeMenit(waktu[0].trim());
-            const menitSelesai = jamKeMenit(waktu[1].trim());
-            const menitSekarang = sekarang.getHours() * 60 + sekarang.getMinutes();
-
-            if (menitSekarang < menitMulai) return "Belum Mulai";
-            if (menitSekarang >= menitMulai && menitSekarang < menitSelesai) return "Berlangsung";
-            return "Selesai";
-        }
-
-        // ======================================
-        // UPDATE STATUS OTOMATIS (WITA)
-        // ======================================
-
-        function updateStatusOtomatis() {
-            const rows = document.querySelectorAll("#tbodyJadwal tr.jadwal-row");
-            
-            if (rows.length === 0) return;
-
-            rows.forEach(row => {
-                const hari = row.dataset.hari;
-                const jam = row.dataset.jam;
-                
-                // Cari data dari dataJadwal
-                const item = dataJadwal.find(d => d.hari === hari && d.jam === jam);
-                
-                if (item) {
-                    // Hitung status ulang dengan WITA
-                    const status = hitungStatusWITA(item.hari, item.jam);
-                    const statusCell = row.querySelector(".status-cell");
-                    
-                    if (statusCell) {
-                        let statusBadge = '';
-                        if (status === "Berlangsung") {
-                            statusBadge = `<span class="badge bg-success">🟢 Berlangsung</span>`;
-                        } else if (status === "Belum Mulai") {
-                            statusBadge = `<span class="badge bg-warning text-dark">🟡 Belum Mulai</span>`;
-                        } else {
-                            statusBadge = `<span class="badge bg-secondary">⚪ Selesai</span>`;
-                        }
-                        statusCell.innerHTML = statusBadge;
-                    }
-                }
-            });
-        }
-
-        // ======================================
-        // FILTER FUNCTIONS
-        // ======================================
-
-        function applyFilters() {
-            const filterHari = document.getElementById("filterHari").value;
-            const filterRuangan = document.getElementById("filterRuangan").value;
-            const filterProdi = document.getElementById("filterProdi").value;
-            const searchMatkul = document.getElementById("searchMatkul").value.toLowerCase();
+            const hari = filterHari ? filterHari.value.trim().toLowerCase() : "";
+            const ruangan = filterRuangan ? filterRuangan.value.trim().toLowerCase() : "";
+            const prodi = filterProdi ? filterProdi.value.trim().toLowerCase() : "";
+            const keyword = searchMatkul ? searchMatkul.value.trim().toLowerCase() : "";
 
             const rows = document.querySelectorAll(".jadwal-row");
+            let nomor = 1;
 
             rows.forEach(row => {
-                const hari = row.dataset.hari;
-                const ruangan = row.dataset.ruangan;
-                const prodi = row.dataset.prodi;
-                const matkul = row.dataset.matkul.toLowerCase();
+                // Ambil data dari atribut data-*
+                const dataHari = (row.getAttribute("data-hari") || "").toLowerCase();
+                const dataRuangan = (row.getAttribute("data-ruangan") || "").toLowerCase();
+                const dataProdi = (row.getAttribute("data-prodi") || "").toLowerCase();
+                const dataMatkul = (row.getAttribute("data-matkul") || "").toLowerCase();
 
-                let show = true;
+                let cocokHari = true;
+                let cocokRuangan = true;
+                let cocokProdi = true;
+                let cocokMatkul = true;
 
-                if (filterHari && hari !== filterHari) show = false;
-                if (filterRuangan && ruangan !== filterRuangan) show = false;
-                if (filterProdi && prodi !== filterProdi) show = false;
-                if (searchMatkul && !matkul.includes(searchMatkul)) show = false;
+                if (hari) cocokHari = dataHari === hari;
+                if (ruangan) cocokRuangan = dataRuangan === ruangan;
+                if (prodi) cocokProdi = dataProdi === prodi;
+                if (keyword) cocokMatkul = dataMatkul.includes(keyword);
 
-                row.style.display = show ? "" : "none";
+                if (cocokHari && cocokRuangan && cocokProdi && cocokMatkul) {
+                    row.style.display = "";
+                    // Update nomor urut
+                    const tdNo = row.querySelector("td:first-child");
+                    if (tdNo) tdNo.textContent = nomor++;
+                } else {
+                    row.style.display = "none";
+                }
             });
         }
 
@@ -557,26 +481,26 @@
         // ======================================
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Event filter
-            document.getElementById("filterHari").addEventListener("change", applyFilters);
-            document.getElementById("filterRuangan").addEventListener("change", applyFilters);
-            document.getElementById("filterProdi").addEventListener("change", applyFilters);
-            document.getElementById("searchMatkul").addEventListener("keyup", applyFilters);
-            
-            // Update status pertama kali setelah 1 detik
-            setTimeout(updateStatusOtomatis, 1000);
+            console.log("✅ Dashboard Admin siap");
+
+            const filterHari = document.getElementById("filterHari");
+            const filterRuangan = document.getElementById("filterRuangan");
+            const filterProdi = document.getElementById("filterProdi");
+            const searchMatkul = document.getElementById("searchMatkul");
+
+            if (filterHari) filterHari.addEventListener("change", filterTabel);
+            if (filterRuangan) filterRuangan.addEventListener("change", filterTabel);
+            if (filterProdi) filterProdi.addEventListener("change", filterTabel);
+            if (searchMatkul) searchMatkul.addEventListener("keyup", filterTabel);
+
+            // Jalankan pertama kali
+            setTimeout(filterTabel, 100);
+
+            // Debug: tampilkan jumlah data
+            const rows = document.querySelectorAll(".jadwal-row");
+            console.log("📊 Total data:", rows.length);
         });
 
-        // ======================================
-        // AUTO UPDATE STATUS SETIAP MENIT (WITA)
-        // ======================================
-
-        // Update status setiap 60 detik menggunakan WITA
-        setInterval(updateStatusOtomatis, 60000);
-
-        // Hapus script yang tidak diperlukan
-        // const namaHari = [...]
-        // document.getElementById("hari").innerHTML = ...
     </script>
 
 </body>

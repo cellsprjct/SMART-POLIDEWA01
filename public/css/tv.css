@@ -249,57 +249,75 @@ body{
 
 }
 
-/* ======================================
+/* ==================================================
    CUACA & LOKASI STYLING
-   ====================================== */
+   ================================================== */
 
 .cuaca {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 22px;
-    font-weight:500;
+    gap: 8px;
+    font-size: 25px;
     color: #fff;
+    margin-top: 2px;
 }
 
 .cuaca i {
-    font-size: 22px;
-    color: #ffd700;
+    font-size: 25px;
+    color: #FFD54F;
+}
+
+#suhu {
+    font-weight: 700;
+    color: #fff;
+    min-width: 50px;
+    font-size: 25px;
 }
 
 .cuaca .lokasi {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     margin-left: 10px;
-    padding-left: 10px;
-    border-left: 1px solid rgba(255,255,255,0.2);
-    font-size: 12px;
-    color: #aaa;
+    padding-left: 12px;
+    border-left: 2px solid rgba(255,255,255,0.25);
+    font-size: 25px;
+    color: #ddd;
 }
 
 .cuaca .lokasi i {
-    font-size: 22px;
-    color: #ffd700;
+    font-size: 20px;
+    color: #FFD54F;
 }
 
 .cuaca .lokasi #namaLokasi {
-    color: #ddd;
-    font-weight: 300;
-    font-size: 22px;
-    font-weight:500;
-
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 25px;
 }
 
-@media (max-width: 768px) {
-    .cuaca .lokasi {
-        font-size: 18px;
-        margin-left: 5px;
-        padding-left: 5px;
+/* Responsive */
+@media (max-width: 1366px) {
+    .cuaca {
+        font-size: 20px;
     }
-    
     .cuaca i {
-        font-size: 22px;
+        font-size: 20px;
+    }
+    #suhu {
+        font-size: 20px;
+        min-width: 40px;
+    }
+    .cuaca .lokasi {
+        font-size: 20px;
+        margin-left: 6px;
+        padding-left: 8px;
+    }
+    .cuaca .lokasi i {
+        font-size: 20px;
+    }
+    .cuaca .lokasi #namaLokasi {
+        font-size: 20px;
     }
 }
 
