@@ -51,6 +51,8 @@ body{
 
     box-shadow:0 3px 12px rgba(0,0,0,.25);
 
+    z-index:100;
+
 }
 
 
@@ -884,7 +886,7 @@ tbody td:nth-child(5){
 
     position:fixed;
 
-    left:20;
+    left:0;
     
     bottom:68px;
     
@@ -1471,4 +1473,44 @@ table,
 
     transition:.20s;
 
+}
+
+/* ==================================================
+   🔥 SLIDESHOW CONTAINER - FULL SCREEN
+   ================================================== */
+
+.slideshow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 9998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.slideshow-container video,
+.slideshow-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Saat slideshow aktif, sembunyikan konten lain */
+.slideshow-active .judul,
+.slideshow-active .room-header,
+.slideshow-active .table-area,
+.slideshow-active .kelas-panel {
+    display: none !important;
+}
+
+.slideshow-active .header {
+    z-index: 10000;
+}
+
+.slideshow-active .running {
+    z-index: 10000;
 }

@@ -59,7 +59,7 @@
 
                         <h5 class="mt-2">Total Jadwal</h5>
 
-                        <h2 id="totalJadwal"><%= jadwal.length %></h2>
+                        <h2><%= typeof jadwal !== 'undefined' ? jadwal.length : 0 %></h2>
 
                     </div>
 
@@ -77,10 +77,8 @@
 
                         <h5 class="mt-2">Dosen</h5>
 
-                        <h2 id="totalDosen">
-
-                            <%= [...new Set(jadwal.map(item=>item.dosen))].length %>
-
+                        <h2>
+                            <%= typeof jadwal !== 'undefined' ? [...new Set(jadwal.map(function(item) { return item.dosen; }))].length : 0 %>
                         </h2>
 
                     </div>
@@ -99,10 +97,8 @@
 
                         <h5 class="mt-2">Ruangan</h5>
 
-                        <h2 id="totalRuangan">
-
-                            <%= [...new Set(jadwal.map(item=>item.ruangan))].length %>
-
+                        <h2>
+                            <%= typeof jadwal !== 'undefined' ? [...new Set(jadwal.map(function(item) { return item.ruangan; }))].length : 0 %>
                         </h2>
 
                     </div>
@@ -111,27 +107,119 @@
 
             </div>
 
-        <div class="col-md-3">
+            <div class="col-md-3">
 
-            <div class="card shadow border-0">
+                <div class="card shadow border-0">
 
-                <div class="card-body text-center">
+                    <div class="card-body text-center">
 
                         <i class="bi bi-mortarboard text-info fs-1"></i>
 
                         <h5 class="mt-2">Program Studi</h5>
 
-                        <h2 id="totalProdi">
-
-                            <%= [...new Set(jadwal.map(item => item.prodi))].length %>
-
+                        <h2>
+                            <%= typeof jadwal !== 'undefined' ? [...new Set(jadwal.map(function(item) { return item.prodi; }))].length : 0 %>
                         </h2>
+
+                    </div>
 
                 </div>
 
             </div>
 
         </div>
+
+        <!-- ===================================================== -->
+        <!-- PANEL SLIDESHOW -->
+        <!-- ===================================================== -->
+
+        <div class="card shadow mt-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <h4 class="mb-0">
+
+                    <i class="bi bi-images"></i>
+
+                    Manajemen Slideshow (Video/Foto)
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+
+                    <i class="bi bi-cloud-upload"></i>
+
+                    <h5 class="mt-2">Klik untuk Upload Gambar atau Video</h5>
+
+                    <p class="text-muted mb-0">Format: JPG, PNG, GIF, WebP, MP4, WebM, OGG (Maks 50MB)</p>
+
+                    <input type="file" id="fileInput" style="display:none" accept="image/*,video/*">
+
+                </div>
+
+                <div id="slideList" class="mt-3">
+
+                    <% if(typeof slideshow !== 'undefined' && slideshow && slideshow.length > 0) { %>
+
+                        <% for(var i = 0; i < slideshow.length; i++) { %>
+
+                            <% var slide = slideshow[i]; %>
+
+                            <div class="slide-item" data-id="<%= slide.id %>">
+
+                                <div class="slide-preview">
+
+                                    <% if(slide.type === 'video') { %>
+
+                                        <video muted playsinline>
+                                            <source src="<%= slide.url %>" type="<%= slide.mimetype %>">
+                                        </video>
+
+                                    <% } else { %>
+
+                                        <img src="<%= slide.url %>" alt="<%= slide.title %>">
+
+                                    <% } %>
+
+                                </div>
+
+                                <div class="slide-info">
+
+                                    <div class="title"><%= slide.title || 'Slide' %></div>
+
+                                    <div class="meta">
+                                        <%= slide.type || 'image' %> • <%= (slide.size / 1024).toFixed(1) %> KB
+                                    </div>
+
+                                </div>
+
+                                <div class="slide-actions">
+
+                                    <button class="btn btn-sm btn-danger btn-hapus-slide" data-id="<%= slide.id %>">
+
+                                        <i class="bi bi-trash"></i> Hapus
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        <% } %>
+
+                    <% } else { %>
+
+                        <p class="text-muted text-center py-3">Belum ada slide. Upload gambar atau video untuk slideshow.</p>
+
+                    <% } %>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -140,7 +228,6 @@
 
             <div class="card-header bg-primary text-white">
 
-                <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center">
 
                     <h4 class="mb-0">
@@ -164,10 +251,9 @@
             </div>
 
             <div class="card-body">
-                
+
                 <div class="row mt-3 g-2">
 
-                    <!-- Filter Hari -->
                     <div class="col-md-3">
 
                         <select id="filterHari" class="form-select">
@@ -186,66 +272,61 @@
 
                     </div>
 
-                    <!-- Filter Ruangan -->
                     <div class="col-md-3">
 
                         <select id="filterRuangan" class="form-select">
 
                             <option value="">🏫 Semua Ruangan</option>
 
-                            <% let ruang = [...new Set(jadwal.map(j => j.ruangan))]; %>
+                            <% if(typeof jadwal !== 'undefined' && jadwal.length > 0) { %>
 
-                            <% ruang.forEach(function(r){ %>
+                                <% var ruangList = [...new Set(jadwal.map(function(j) { return j.ruangan; }))]; %>
 
-                                <option value="<%= r %>">
+                                <% for(var r = 0; r < ruangList.length; r++) { %>
 
-                                    <%= r %>
+                                    <option value="<%= ruangList[r] %>">
 
-                                </option>
+                                        <%= ruangList[r] %>
 
-                            <% }) %>
+                                    </option>
+
+                                <% } %>
+
+                            <% } %>
 
                         </select>
 
                     </div>
 
-                    <!-- Filter Prodi -->
                     <div class="col-md-3">
 
                         <select id="filterProdi" class="form-select">
 
                             <option value="">🎓 Semua Prodi</option>
 
-                            <% let prodi = [...new Set(jadwal.map(j => j.prodi))]; %>
+                            <% if(typeof jadwal !== 'undefined' && jadwal.length > 0) { %>
 
-                            <% prodi.forEach(function(p){ %>
+                                <% var prodiList = [...new Set(jadwal.map(function(j) { return j.prodi; }))]; %>
 
-                                <option value="<%= p %>">
+                                <% for(var p = 0; p < prodiList.length; p++) { %>
 
-                                    <%= p %>
+                                    <option value="<%= prodiList[p] %>">
 
-                                </option>
+                                        <%= prodiList[p] %>
 
-                            <% }) %>
+                                    </option>
+
+                                <% } %>
+
+                            <% } %>
 
                         </select>
 
                     </div>
 
-                    <!-- Cari -->
                     <div class="col-md-3">
 
-                        <input
-
-                            type="text"
-
-                            id="searchMatkul"
-
-                            class="form-control"
-
-                            placeholder="🔍 Cari Mata Kuliah..."
-
-                        >
+                        <input type="text" id="searchMatkul" class="form-control" placeholder="🔍 Cari Mata Kuliah...">
 
                     </div>
 
@@ -282,124 +363,85 @@
                         </thead>
 
                         <tbody id="tbodyJadwal">
-                            <% if(jadwal.length==0){ %>
 
-                            <tr>
+                            <% if(typeof jadwal !== 'undefined' && jadwal.length > 0) { %>
 
-                                <td colspan="9" class="text-center">
+                                <% for(var i = 0; i < jadwal.length; i++) { %>
 
-                                    Belum ada jadwal.
+                                    <% var item = jadwal[i]; %>
 
-                                </td>
+                                    <tr class="jadwal-row" 
+                                        data-hari="<%= item.hari %>" 
+                                        data-ruangan="<%= item.ruangan %>" 
+                                        data-prodi="<%= item.prodi || '' %>" 
+                                        data-matkul="<%= item.matkul %>"
+                                        data-jam="<%= item.jam %>"
+                                        data-index="<%= item.indexAsli %>">
 
-                            </tr>
+                                        <td class="text-center"><%= i + 1 %></td>
+
+                                        <td class="hari"><%= item.hari %></td>
+
+                                        <td><%= item.jamDisplay || item.jam %></td>
+
+                                        <td class="matkul"><%= item.matkul %></td>
+
+                                        <td class="prodi"><%= item.prodi || "-" %></td>
+
+                                        <td><%= item.dosen %></td>
+
+                                        <td class="ruangan"><%= item.ruangan %></td>
+
+                                        <td class="text-center status-cell">
+
+                                            <% if(item.status === "Berlangsung"){ %>
+
+                                                <span class="badge bg-success">🟢 Berlangsung</span>
+
+                                            <% } else if(item.status === "Belum Mulai"){ %>
+
+                                                <span class="badge bg-warning text-dark">🟡 Belum Mulai</span>
+
+                                            <% } else { %>
+
+                                                <span class="badge bg-secondary">⚪ Selesai</span>
+
+                                            <% } %>
+
+                                        </td>
+
+                                        <td class="text-center">
+
+                                            <a href="/admin/edit/<%= item.indexAsli %>" class="btn btn-warning btn-sm">
+
+                                                <i class="bi bi-pencil-square"></i>
+
+                                            </a>
+
+                                            <a href="/admin/hapus/<%= item.indexAsli %>" class="btn btn-danger btn-sm"
+                                               onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </a>
+
+                                        </td>
+
+                                    </tr>
+
+                                <% } %>
 
                             <% } else { %>
 
-                            <% jadwal.forEach((item,index)=>{ %>
+                                <tr>
 
-                            <tr class="jadwal-row" 
-                                data-hari="<%= item.hari %>" 
-                                data-ruangan="<%= item.ruangan %>" 
-                                data-prodi="<%= item.prodi || '' %>" 
-                                data-matkul="<%= item.matkul %>"
-                                data-jam="<%= item.jam %>"
-                                data-id="<%= item.id || index %>">
+                                    <td colspan="9" class="text-center">
 
-                                <td class="text-center">
+                                        Belum ada jadwal.
 
-                                    <%= index+1 %>
+                                    </td>
 
-                                </td>
-
-                                <td class="hari">
-
-                                    <%= item.hari %>
-
-                                </td>
-
-                                <td>
-
-                                    <%= item.jamDisplay || item.jam %>
-
-                                </td>
-
-                                <td class="matkul">
-
-                                    <%= item.matkul %>
-
-                                </td>
-
-                                <td class="prodi">
-
-                                    <%= item.prodi || "-" %>
-
-                                </td>
-
-                                <td>
-
-                                    <%= item.dosen %>
-
-                                </td>
-
-                                <td class="ruangan">
-
-                                    <%= item.ruangan %>
-
-                                </td>
-
-                                <td class="text-center status-cell">
-
-                                    <% if(item.status=="Berlangsung"){ %>
-
-                                        <span class="badge bg-success">
-
-                                            🟢 Berlangsung
-
-                                        </span>
-
-                                    <% } else if(item.status=="Belum Mulai"){ %>
-
-                                        <span class="badge bg-warning text-dark">
-
-                                            🟡 Belum Mulai
-
-                                        </span>
-
-                                    <% } else { %>
-
-                                        <span class="badge bg-secondary">
-
-                                            ⚪ Selesai
-
-                                        </span>
-
-                                    <% } %>
-
-                                </td>
-
-                                <td class="text-center">
-
-                                    <a href="/admin/edit/<%= item.id || item.indexAsli %>"
-                                       class="btn btn-warning btn-sm">
-
-                                        <i class="bi bi-pencil-square"></i>
-
-                                    </a>
-
-                                    <a href="/admin/hapus/<%= item.id || item.indexAsli %>"
-                                       class="btn btn-danger btn-sm"
-                                       onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
-
-                                        <i class="bi bi-trash"></i>
-
-                                    </a>
-
-                                </td>
-
-                            </tr>
-
-                            <% }) %>
+                                </tr>
 
                             <% } %>
 
@@ -418,89 +460,148 @@
     <!-- FOOTER -->
     <footer class="text-center mt-5 mb-3 text-secondary">
 
-        <p>
-            <i class="bi bi-clock"></i>
-            Waktu Indonesia Tengah (WITA) | Status diperbarui otomatis setiap 60 detik
-        </p>
+        <p>TEKNIK ELEKTRONIKA<p>
         <p>© 2026 POLITEKNIK DEWANTARA</p>
 
     </footer>
 
-    <!-- ===================================================== -->
-    <!-- 🔥 SCRIPT FILTER (LANGSUNG DI HALAMAN) -->
-    <!-- ===================================================== -->
     <script>
-        // ======================================
-        // FUNGSI FILTER
-        // ======================================
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Upload file
+            var fileInput = document.getElementById("fileInput");
+            if (fileInput) {
+                fileInput.addEventListener("change", function(e) {
+                    var file = this.files[0];
+                    if (!file) {
+                        alert("Pilih file terlebih dahulu!");
+                        return;
+                    }
 
-        function filterTabel() {
-            const filterHari = document.getElementById("filterHari");
-            const filterRuangan = document.getElementById("filterRuangan");
-            const filterProdi = document.getElementById("filterProdi");
-            const searchMatkul = document.getElementById("searchMatkul");
+                    if (file.size > 50 * 1024 * 1024) {
+                        alert("Ukuran file terlalu besar! Maksimal 50MB.");
+                        this.value = "";
+                        return;
+                    }
 
-            const hari = filterHari ? filterHari.value.trim().toLowerCase() : "";
-            const ruangan = filterRuangan ? filterRuangan.value.trim().toLowerCase() : "";
-            const prodi = filterProdi ? filterProdi.value.trim().toLowerCase() : "";
-            const keyword = searchMatkul ? searchMatkul.value.trim().toLowerCase() : "";
+                    var formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("title", file.name);
 
-            const rows = document.querySelectorAll(".jadwal-row");
-            let nomor = 1;
+                    fetch("/admin/api/slideshow", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.success) {
+                            alert("✅ Slide berhasil diupload!");
+                            location.reload();
+                        } else {
+                            alert("❌ Gagal upload: " + (data.error || "Unknown error"));
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error("Error upload:", err);
+                        alert("❌ Gagal upload file: " + err.message);
+                    });
 
-            rows.forEach(row => {
-                // Ambil data dari atribut data-*
-                const dataHari = (row.getAttribute("data-hari") || "").toLowerCase();
-                const dataRuangan = (row.getAttribute("data-ruangan") || "").toLowerCase();
-                const dataProdi = (row.getAttribute("data-prodi") || "").toLowerCase();
-                const dataMatkul = (row.getAttribute("data-matkul") || "").toLowerCase();
+                    this.value = "";
+                });
+            }
 
-                let cocokHari = true;
-                let cocokRuangan = true;
-                let cocokProdi = true;
-                let cocokMatkul = true;
+            // Event listener untuk hapus slide
+            document.addEventListener("click", function(e) {
+                var target = e.target;
+                var button = target.closest(".btn-hapus-slide");
+                
+                if (button) {
+                    var id = button.getAttribute("data-id");
+                    if (id) {
+                        if (!confirm("Yakin ingin menghapus slide ini?")) {
+                            return;
+                        }
 
-                if (hari) cocokHari = dataHari === hari;
-                if (ruangan) cocokRuangan = dataRuangan === ruangan;
-                if (prodi) cocokProdi = dataProdi === prodi;
-                if (keyword) cocokMatkul = dataMatkul.includes(keyword);
-
-                if (cocokHari && cocokRuangan && cocokProdi && cocokMatkul) {
-                    row.style.display = "";
-                    // Update nomor urut
-                    const tdNo = row.querySelector("td:first-child");
-                    if (tdNo) tdNo.textContent = nomor++;
-                } else {
-                    row.style.display = "none";
+                        fetch("/admin/api/slideshow/" + id, {
+                            method: "DELETE"
+                        })
+                        .then(function(response) {
+                            return response.json();
+                        })
+                        .then(function(data) {
+                            if (data.success) {
+                                alert("✅ Slide berhasil dihapus!");
+                                location.reload();
+                            } else {
+                                alert("❌ Gagal menghapus slide: " + (data.error || "Unknown error"));
+                            }
+                        })
+                        .catch(function(err) {
+                            console.error("Error hapus slide:", err);
+                            alert("❌ Gagal menghapus slide: " + err.message);
+                        });
+                    }
                 }
             });
-        }
 
-        // ======================================
-        // EVENT LISTENERS
-        // ======================================
+            // ======================================
+            // FUNGSI FILTER
+            // ======================================
 
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("✅ Dashboard Admin siap");
+            function filterTabel() {
+                var filterHari = document.getElementById("filterHari");
+                var filterRuangan = document.getElementById("filterRuangan");
+                var filterProdi = document.getElementById("filterProdi");
+                var searchMatkul = document.getElementById("searchMatkul");
 
-            const filterHari = document.getElementById("filterHari");
-            const filterRuangan = document.getElementById("filterRuangan");
-            const filterProdi = document.getElementById("filterProdi");
-            const searchMatkul = document.getElementById("searchMatkul");
+                var hari = filterHari ? filterHari.value.trim().toLowerCase() : "";
+                var ruangan = filterRuangan ? filterRuangan.value.trim().toLowerCase() : "";
+                var prodi = filterProdi ? filterProdi.value.trim().toLowerCase() : "";
+                var keyword = searchMatkul ? searchMatkul.value.trim().toLowerCase() : "";
+
+                var rows = document.querySelectorAll(".jadwal-row");
+                var nomor = 1;
+
+                rows.forEach(function(row) {
+                    var dataHari = (row.getAttribute("data-hari") || "").toLowerCase();
+                    var dataRuangan = (row.getAttribute("data-ruangan") || "").toLowerCase();
+                    var dataProdi = (row.getAttribute("data-prodi") || "").toLowerCase();
+                    var dataMatkul = (row.getAttribute("data-matkul") || "").toLowerCase();
+
+                    var cocokHari = true;
+                    var cocokRuangan = true;
+                    var cocokProdi = true;
+                    var cocokMatkul = true;
+
+                    if (hari) cocokHari = dataHari === hari;
+                    if (ruangan) cocokRuangan = dataRuangan === ruangan;
+                    if (prodi) cocokProdi = dataProdi === prodi;
+                    if (keyword) cocokMatkul = dataMatkul.includes(keyword);
+
+                    if (cocokHari && cocokRuangan && cocokProdi && cocokMatkul) {
+                        row.style.display = "";
+                        var tdNo = row.querySelector("td:first-child");
+                        if (tdNo) tdNo.textContent = nomor++;
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
+
+            var filterHari = document.getElementById("filterHari");
+            var filterRuangan = document.getElementById("filterRuangan");
+            var filterProdi = document.getElementById("filterProdi");
+            var searchMatkul = document.getElementById("searchMatkul");
 
             if (filterHari) filterHari.addEventListener("change", filterTabel);
             if (filterRuangan) filterRuangan.addEventListener("change", filterTabel);
             if (filterProdi) filterProdi.addEventListener("change", filterTabel);
             if (searchMatkul) searchMatkul.addEventListener("keyup", filterTabel);
 
-            // Jalankan pertama kali
             setTimeout(filterTabel, 100);
-
-            // Debug: tampilkan jumlah data
-            const rows = document.querySelectorAll(".jadwal-row");
-            console.log("📊 Total data:", rows.length);
         });
-
     </script>
 
 </body>

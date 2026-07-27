@@ -24,9 +24,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.urlencoded({extended: true}));
 
 app.use(express.json());
 
@@ -48,6 +46,15 @@ app.use((req, res) => {
 
     res.status(404).send("<h2>404 | Halaman tidak ditemukan</h2>");
 
+});
+
+// ======================================
+// Error Handler
+// ======================================
+
+app.use(function(err, req, res, next) {
+    console.error("Error:", err);
+    res.status(500).send("<h2>Error: " + err.message + "</h2>");
 });
 
 // ======================================

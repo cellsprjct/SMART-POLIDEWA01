@@ -50,9 +50,6 @@
                 Selasa, 21 Juli 2026
             </div>
 
-            <!-- ========================================== -->
-            <!-- 🔥 PANEL CUACA (DITAMBAHKAN) -->
-            <!-- ========================================== -->
             <div class="cuaca" id="cuacaPanel">
 
                 <i class="fa-solid fa-cloud-sun" id="weatherIcon"></i>
@@ -65,7 +62,6 @@
                 </span>
 
             </div>
-            <!-- ========================================== -->
 
         </div>
 
@@ -124,6 +120,14 @@
 </div>
 
 <!-- ===================================================== -->
+<!-- 🔥 SLIDESHOW CONTAINER -->
+<!-- ===================================================== -->
+
+<div id="slideshowContainer" class="slideshow-container" style="display:none;">
+    <!-- Diisi oleh JavaScript -->
+</div>
+
+<!-- ===================================================== -->
 <!-- PANEL KELAS SAAT INI -->
 <!-- ===================================================== -->
 
@@ -137,7 +141,28 @@
 
     <div class="kelas-content" id="kelasSaatIni">
 
-        <!-- diisi otomatis tv.js -->
+        <div class="panel-box">
+            <i class="fa-solid fa-book-open"></i>
+            <div class="panel-text no-class-text">
+                <div class="no-class-title">Belum ada kelas berlangsung</div>
+                <div class="no-class-subtitle">Silakan menunggu jadwal berikutnya</div>
+            </div>
+        </div>
+
+        <div class="panel-box">
+            <i class="fa-regular fa-clock"></i>
+            <div><h3>WAKTU</h3><p>-</p></div>
+        </div>
+
+        <div class="panel-box">
+            <i class="fa-solid fa-user"></i>
+            <div><h3>DOSEN</h3><p>-</p></div>
+        </div>
+
+        <div class="panel-box">
+            <i class="fa-solid fa-building"></i>
+            <div><h3>RUANGAN</h3><p>-</p></div>
+        </div>
 
     </div>
 
@@ -155,7 +180,7 @@
 
     </div>
 
-    <marquee scrollamount="7">
+    <marquee scrollamount="7" id="runningText">
 
         SELAMAT DATANG DI POLITEKNIK DEWANTARA •
 
